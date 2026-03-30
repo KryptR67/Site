@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BGS – Pet Value List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#030508;--surface:#050912;--card:#080d1a;--card2:#0c1220;
+      --border:#0f1b2e;--border2:#162240;
+      --pink:#3b82f6;--purple:#2563eb;--blue:#38bdf8;
+      --yellow:#f59e0b;--green:#10b981;--red:#ef4444;
+      --text:#e8e4f8;--muted:#2a3a5c;--muted2:#6b82a8;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;}
+    .ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+    .blob{position:absolute;border-radius:50%;filter:blur(120px);}
+    .blob-1{width:700px;height:700px;background:var(--purple);top:-250px;left:-250px;opacity:0.1;}
+    .blob-2{width:500px;height:500px;background:var(--pink);bottom:-150px;right:-150px;opacity:0.08;}
+    .blob-3{width:400px;height:400px;background:var(--blue);top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.04;}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:rgba(5,5,7,0.9);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;height:56px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;}
+    .logo-mark{width:26px;height:26px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 0 14px rgba(37,99,235,0.35);}
+    .nav-logo-text{font-weight:800;font-size:1.05rem;letter-spacing:-0.02em;background:linear-gradient(90deg,#e8f4ff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .nav-links{display:flex;align-items:center;gap:2px;}
+    .nav-links a{color:var(--muted2);font-weight:500;font-size:0.875rem;text-decoration:none;padding:7px 13px;border-radius:8px;transition:all 0.18s;letter-spacing:-0.01em;}
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05);}
+    .nav-links a.active{color:var(--purple);}
+    .nav-discord{margin-left:10px;background:#5865F2!important;color:#fff!important;border-radius:8px!important;padding:6px 13px!important;font-weight:600!important;font-size:0.8rem!important;}
+    .nav-lock{margin-left:6px;text-decoration:none;opacity:0.2;font-size:14px;padding:7px 8px;transition:opacity 0.2s;}
+    .nav-lock:hover{opacity:0.6;}
+
+    /* HERO */
+    .hero{position:relative;z-index:1;text-align:center;padding:96px 24px 80px;}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.18);border-radius:999px;padding:5px 16px;font-size:0.7rem;font-weight:600;color:var(--purple);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:28px;}
+    .eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+    .hero h1{font-size:clamp(2.8rem,6vw,4.8rem);font-weight:900;line-height:1.05;letter-spacing:-0.04em;margin-bottom:20px;}
+    .hero h1 .grad{background:linear-gradient(135deg,var(--blue) 0%,var(--purple) 45%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .hero p{color:var(--muted2);font-size:1.05rem;font-weight:400;max-width:460px;margin:0 auto 40px;line-height:1.75;letter-spacing:-0.01em;}
+    .hero-ctas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;font-weight:600;font-size:0.9rem;border-radius:10px;padding:11px 24px;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;letter-spacing:-0.01em;}
+    .btn-primary{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;box-shadow:0 4px 20px rgba(37,99,235,0.25);}
+    .btn-primary:hover{opacity:0.88;transform:translateY(-1px);box-shadow:0 8px 28px rgba(37,99,235,0.35);}
+    .btn-ghost{background:rgba(255,255,255,0.04);border:1px solid var(--border2);color:var(--muted2);}
+    .btn-ghost:hover{background:rgba(255,255,255,0.07);color:var(--text);}
+
+    /* STATS */
+    .stat-bar{position:relative;z-index:1;display:flex;max-width:580px;margin:0 auto 80px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+    .stat-item{flex:1;padding:20px;text-align:center;position:relative;}
+    .stat-item+.stat-item::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--border);}
+    .stat-num{font-size:1.9rem;font-weight:800;letter-spacing:-0.04em;background:linear-gradient(135deg,var(--text),var(--muted2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .stat-label{font-size:0.7rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
+
+    /* MARQUEE */
+    .marquee-wrap{position:relative;z-index:1;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--card);padding:11px 0;margin-bottom:70px;}
+    .marquee-track{display:flex;gap:48px;width:max-content;animation:marqueeX 35s linear infinite;}
+    @keyframes marqueeX{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+    .marquee-item{display:flex;align-items:center;gap:10px;font-size:0.78rem;font-weight:500;color:var(--muted2);white-space:nowrap;letter-spacing:-0.01em;}
+    .marquee-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;}
+
+    /* SECTION */
+    .section{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px 100px;}
+    .section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;}
+    .section-title{font-size:1.4rem;font-weight:800;letter-spacing:-0.03em;}
+    .section-title span{background:linear-gradient(90deg,var(--text),var(--muted2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .section-link{color:var(--purple);font-size:0.83rem;font-weight:600;text-decoration:none;letter-spacing:-0.01em;}
+    .section-link:hover{color:var(--pink);}
+
+    /* RARITY GRID */
+    .rarity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:56px;}
+    .rarity-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:18px;text-decoration:none;transition:all 0.22s;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;}
+    .rarity-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.22s;}
+    .rarity-card:hover{transform:translateY(-3px);}
+    .rarity-card:hover::before{opacity:1;}
+    .rc-secret::before{background:linear-gradient(135deg,rgba(239,68,68,0.07),transparent);}
+    .rc-secret:hover{border-color:rgba(239,68,68,0.35);box-shadow:0 8px 28px rgba(239,68,68,0.08);}
+    .rc-legendary::before{background:linear-gradient(135deg,rgba(245,158,11,0.07),transparent);}
+    .rc-legendary:hover{border-color:rgba(245,158,11,0.35);box-shadow:0 8px 28px rgba(245,158,11,0.08);}
+    .rc-robux::before{background:linear-gradient(135deg,rgba(56,189,248,0.07),transparent);}
+    .rc-robux:hover{border-color:rgba(56,189,248,0.35);box-shadow:0 8px 28px rgba(56,189,248,0.08);}
+    .rc-misc::before{background:linear-gradient(135deg,rgba(37,99,235,0.07),transparent);}
+    .rc-misc:hover{border-color:rgba(37,99,235,0.35);box-shadow:0 8px 28px rgba(37,99,235,0.08);}
+    .rarity-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;position:relative;z-index:1;}
+    .ri-secret{background:rgba(239,68,68,0.12);}
+    .ri-legendary{background:rgba(245,158,11,0.12);}
+    .ri-robux{background:rgba(56,189,248,0.12);}
+    .ri-misc{background:rgba(37,99,235,0.12);}
+    .rarity-name{font-weight:700;font-size:0.9rem;letter-spacing:-0.02em;position:relative;z-index:1;}
+    .rarity-count{font-size:0.72rem;color:var(--muted2);font-weight:500;position:relative;z-index:1;}
+
+    /* TOP PETS */
+    .top-pets{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;}
+    .top-pet-card{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;text-decoration:none;color:var(--text);transition:all 0.22s;display:block;position:relative;}
+    .top-pet-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.4);}
+    .tc-secret:hover{border-color:rgba(239,68,68,0.3);box-shadow:0 12px 40px rgba(239,68,68,0.07);}
+    .tc-legendary:hover{border-color:rgba(245,158,11,0.3);box-shadow:0 12px 40px rgba(245,158,11,0.07);}
+    .tc-limited:hover{border-color:rgba(59,130,246,0.3);box-shadow:0 12px 40px rgba(59,130,246,0.07);}
+    .tpc-img{width:100%;height:115px;background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+    .tpc-img img{width:100%;height:100%;object-fit:cover;}
+    .tpc-img-placeholder{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;}
+    .tpc-body{padding:10px 11px 12px;}
+    .tpc-name{font-weight:700;font-size:0.83rem;letter-spacing:-0.01em;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .tpc-rarity-tag{display:inline-block;border-radius:4px;padding:1px 6px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px;}
+    .rt-secret{background:rgba(239,68,68,0.1);color:#f87171;}
+    .rt-legendary{background:rgba(245,158,11,0.1);color:var(--yellow);}
+    .rt-limited{background:rgba(59,130,246,0.1);color:var(--pink);}
+    .rt-rare{background:rgba(56,189,248,0.08);color:var(--blue);}
+    .tpc-value-row{display:flex;align-items:center;justify-content:space-between;}
+    .tpc-value{font-family:'JetBrains Mono',monospace;font-size:0.83rem;font-weight:700;color:var(--yellow);}
+    .tpc-trend{font-size:0.68rem;font-weight:600;}
+    .trend-up{color:var(--green);}
+    .trend-down{color:var(--red);}
+    .trend-stable{color:var(--muted);}
+
+    /* LOADING */
+    .loading-dots{display:flex;gap:5px;justify-content:center;padding:40px 0;}
+    .loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:ldot 1.2s infinite;}
+    .loading-dots span:nth-child(2){animation-delay:0.2s;}
+    .loading-dots span:nth-child(3){animation-delay:0.4s;}
+    @keyframes ldot{0%,100%{opacity:0.2;transform:scale(0.8);}50%{opacity:1;transform:scale(1);}}
+
+    /* FOOTER */
+    footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+    .footer-brand{font-weight:700;font-size:0.85rem;background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .footer-text{color:var(--muted);font-size:0.75rem;}
+
+    @media(max-width:600px){.hero h1{font-size:2.4rem;}.rarity-grid{grid-template-columns:1fr 1fr;}.stat-bar{margin:0 24px 60px;}}
+  </style>
+</head>
+<body>
+<div class="ambient">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="logo-mark">🫧</div>
+    <span class="nav-logo-text">BGS</span>
+  </a>
+  <div class="nav-links">
+    <a href="/" class="active">Home</a>
+    <a href="/pets">Value List</a>
+    <a href="https://discord.gg/ogbgs" class="nav-discord" target="_blank">Discord</a>
+    <a href="/admin/login" class="nav-lock" title="Admin">🔒</a>
+  </div>
+</nav>
+
+<section class="hero">
+
+  <h1>The <span class="grad">Definitive</span><br>Pet Value List</h1>
+  <p>Community-maintained prices for every pet in OG BGS. Updated regularly by our trusted trader team.</p>
+  <div class="hero-ctas">
+    <a href="/pets" class="btn btn-primary">View All Pets →</a>
+    <a href="https://discord.gg/ogbgs" target="_blank" class="btn btn-ghost">Join Discord</a>
+  </div>
+</section>
+
+<div class="stat-bar">
+  <div class="stat-item"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Total Pets</div></div>
+  <div class="stat-item"><div class="stat-num" id="stat-secrets">—</div><div class="stat-label">Secrets</div></div>
+  <div class="stat-item"><div class="stat-num" id="stat-legendary">—</div><div class="stat-label">Legendaries</div></div>
+</div>
+
+<div class="marquee-wrap" id="marqueeWrap" style="display:none;">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-title"><span>Browse by Rarity</span></div>
+    <a href="/pets" class="section-link">View all →</a>
+  </div>
+  <div class="rarity-grid">
+    <a href="/pets?rarity=Limited+Secret" class="rarity-card rc-secret">
+      <div class="rarity-icon ri-secret">🔴</div>
+      <div><div class="rarity-name" style="color:#f87171;">Limited Secret</div><div class="rarity-count" id="count-ltd-secret">—</div></div>
+    </a>
+    <a href="/pets?rarity=Permanent+Secret" class="rarity-card rc-secret">
+      <div class="rarity-icon ri-secret">💎</div>
+      <div><div class="rarity-name" style="color:#f87171;">Permanent Secret</div><div class="rarity-count" id="count-perm-secret">—</div></div>
+    </a>
+    <a href="/pets?rarity=Limited+Legendary" class="rarity-card rc-legendary">
+      <div class="rarity-icon ri-legendary">⭐</div>
+      <div><div class="rarity-name" style="color:#f59e0b;">Limited Legendary</div><div class="rarity-count" id="count-ltd-legendary">—</div></div>
+    </a>
+    <a href="/pets?rarity=Robux" class="rarity-card rc-robux">
+      <div class="rarity-icon ri-robux">💠</div>
+      <div><div class="rarity-name" style="color:#38bdf8;">Robux</div><div class="rarity-count" id="count-robux">—</div></div>
+    </a>
+    <a href="/pets?rarity=Misc" class="rarity-card rc-misc">
+      <div class="rarity-icon ri-misc">✨</div>
+      <div><div class="rarity-name" style="color:#2563eb;">Misc</div><div class="rarity-count" id="count-misc">—</div></div>
+    </a>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title"><span>Top Valued Pets</span></div>
+    <a href="/pets" class="section-link">See full list →</a>
+  </div>
+  <div id="topPets"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+</div>
+
+<footer>
+  <span class="footer-brand">BGS</span>
+  <span class="footer-text">Community-maintained pet value list</span>
+</footer>
+
+<script>
+  const API='';
+  function fv(v){if(!v||v==='null'||v==='0')return'N/A';const u=v.toString().toUpperCase().trim();if(u==='N/A'||u==='O/C')return u;const n=parseFloat(v);if(isNaN(n))return v;if(n>=1e6)return(n/1e6).toFixed(1).replace(/\.0$/,'')+'M';if(n>=1000)return(n/1000).toFixed(1).replace(/\.0$/,'')+'K';return n.toString();}
+  function rtc(r){if(!r)return'rt-rare';const l=r.toLowerCase();if(l.includes('secret'))return'rt-secret';if(l.includes('legendary'))return'rt-legendary';if(l.includes('limited'))return'rt-limited';return'rt-rare';}
+  function chc(r){if(!r)return'';const l=r.toLowerCase();if(l.includes('secret'))return'tc-secret';if(l.includes('legendary'))return'tc-legendary';if(l.includes('limited'))return'tc-limited';return'';}
+  function th(t){if(t==='up')return'<span class="tpc-trend trend-up">▲</span>';if(t==='down')return'<span class="tpc-trend trend-down">▼</span>';return'<span class="tpc-trend trend-stable">—</span>';}
+  async function load(){
+    try{
+      const res=await fetch(`${API}/api/pets/`);
+      const pets=await res.json();
+      const secrets=pets.filter(p=>p.rarity&&p.rarity.includes('Secret'));
+      const legs=pets.filter(p=>p.rarity&&p.rarity.includes('Legendary'));
+      document.getElementById('stat-total').textContent=pets.length;
+      document.getElementById('stat-secrets').textContent=secrets.length;
+      document.getElementById('stat-legendary').textContent=legs.length;
+      const counts={};pets.forEach(p=>{counts[p.rarity]=(counts[p.rarity]||0)+1;});
+      const sc=(id,key)=>{const el=document.getElementById(id);if(el)el.textContent=(counts[key]||0)+' pets';};
+      sc('count-ltd-secret','Limited Secret');sc('count-perm-secret','Permanent Secret');
+      sc('count-ltd-legendary','Limited Legendary');sc('count-robux','Robux');sc('count-misc','Misc');
+      const mt=document.getElementById('marqueeTrack');
+      const mp=pets.slice(0,24);
+      if(mp.length>0){
+        const dc={'Limited Secret':'#f87171','Permanent Secret':'#f87171','Limited Legendary':'#f59e0b','Robux':'#38bdf8','Misc':'#2563eb'};
+        const items=mp.map(p=>`<div class="marquee-item"><span class="marquee-dot" style="background:${dc[p.rarity]||'#2563eb'};"></span>${p.name} <span style="color:var(--yellow);font-family:'JetBrains Mono',monospace;font-size:0.72rem;">${fv(p.value)}</span></div>`).join('');
+        mt.innerHTML=items+items;document.getElementById('marqueeWrap').style.display='block';
+      }
+      const sorted=[...pets].sort((a,b)=>(parseFloat(b.value)||0)-(parseFloat(a.value)||0)).slice(0,12);
+      document.getElementById('topPets').innerHTML=`<div class="top-pets">${sorted.map(p=>{
+        const img=p.image_url?`<img src="${p.image_url}" alt="${p.name}" loading="lazy">`:`<div class="tpc-img-placeholder">${p.name.split(' ').map(w=>w[0]).join('')}</div>`;
+        return`<a href="/pet/${p.id}" class="top-pet-card ${chc(p.rarity)}"><div class="tpc-img">${img}</div><div class="tpc-body"><div class="tpc-name">${p.name}</div><span class="tpc-rarity-tag ${rtc(p.rarity)}">${p.rarity||'Unknown'}</span><div class="tpc-value-row"><span class="tpc-value">${fv(p.value)}</span>${th(p.trend)}</div></div></a>`;
+      }).join('')}</div>`;
+    }catch(e){console.error(e);}
+  }
+  load();
+</script>
+</body>
+</html>

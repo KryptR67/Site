@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BGS Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#030508;--surface:#050912;--card:#080d1a;--card2:#0c1220;--border:#0f1b2e;--border2:#162240;--pink:#3b82f6;--purple:#2563eb;--blue:#38bdf8;--yellow:#f59e0b;--green:#10b981;--red:#ef4444;--text:#e8e4f8;--muted:#2a3a5c;--muted2:#6b82a8;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;}
+
+    nav{background:rgba(5,5,7,0.95);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;height:56px;gap:16px;position:sticky;top:0;z-index:100;}
+    .nav-logo{font-weight:800;font-size:1.05rem;background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-right:auto;}
+    .nav-user{color:var(--muted2);font-size:0.83rem;}
+    .nav-logout{color:var(--red);font-size:0.83rem;font-weight:600;text-decoration:none;padding:6px 12px;border:1px solid rgba(239,68,68,0.25);border-radius:8px;transition:all 0.18s;}
+    .nav-logout:hover{background:rgba(239,68,68,0.08);}
+
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:20px;max-width:1300px;margin:0 auto;padding:24px;}
+    @media(max-width:900px){.layout{grid-template-columns:1fr;}}
+
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+    .panel-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .panel-title{font-weight:700;font-size:1rem;letter-spacing:-0.02em;}
+
+    .btn{display:inline-flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif;font-weight:600;font-size:0.8rem;padding:7px 14px;border-radius:8px;border:none;cursor:pointer;transition:all 0.18s;letter-spacing:-0.01em;}
+    .btn-primary{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;}
+    .btn-primary:hover{opacity:0.88;}
+    .btn-sm{padding:5px 11px;font-size:0.72rem;}
+    .btn-edit{background:rgba(37,99,235,0.1);color:var(--purple);border:1px solid rgba(37,99,235,0.25);}
+    .btn-edit:hover{background:rgba(37,99,235,0.18);}
+    .btn-delete{background:rgba(239,68,68,0.08);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
+    .btn-delete:hover{background:rgba(239,68,68,0.15);}
+    .btn-save{background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.25);}
+    .btn-save:hover{background:rgba(16,185,129,0.18);}
+    .btn-cancel{background:var(--surface);color:var(--muted2);border:1px solid var(--border2);}
+
+    .filter-bar{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+    .filter-bar input{flex:1;min-width:150px;background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.83rem;padding:7px 12px;border-radius:8px;outline:none;}
+    .filter-bar input:focus{border-color:var(--purple);}
+    .filter-bar input::placeholder{color:var(--muted);}
+    .filter-tab{padding:5px 12px;border-radius:7px;font-size:0.68rem;font-weight:600;background:var(--surface);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:all 0.18s;text-transform:uppercase;letter-spacing:0.06em;}
+    .filter-tab.active{background:rgba(37,99,235,0.12);border-color:rgba(37,99,235,0.35);color:var(--purple);}
+
+    .pet-table{width:100%;border-collapse:collapse;}
+    .pet-table th{text-align:left;padding:9px 14px;font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid var(--border);}
+    .pet-table td{padding:9px 14px;border-bottom:1px solid rgba(24,24,42,0.6);vertical-align:middle;}
+    .pet-table tr:last-child td{border-bottom:none;}
+    .pet-table tr:hover td{background:rgba(37,99,235,0.03);}
+
+    .rarity-badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;}
+    .r-limited-secret{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
+    .r-permanent-secret{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
+    .r-limited-legendary{background:rgba(245,158,11,0.1);color:var(--yellow);border:1px solid rgba(245,158,11,0.2);}
+    .r-robux{background:rgba(56,189,248,0.08);color:var(--blue);border:1px solid rgba(56,189,248,0.15);}
+    .r-misc{background:rgba(37,99,235,0.1);color:var(--purple);border:1px solid rgba(37,99,235,0.2);}
+
+    .value-display{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--yellow);font-size:0.83rem;}
+    .edit-form{display:none;flex-direction:column;gap:7px;padding:10px 0;}
+    .edit-form input,.edit-form select{background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.82rem;padding:5px 9px;border-radius:7px;outline:none;}
+    .edit-form input:focus{border-color:var(--purple);}
+    .field-row{display:flex;align-items:center;gap:8px;}
+    .field-lbl{color:var(--muted2);font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;width:86px;flex-shrink:0;}
+
+    .history-list{padding:0;}
+    .history-item{padding:12px 18px;border-bottom:1px solid rgba(24,24,42,0.7);}
+    .history-item:last-child{border-bottom:none;}
+    .history-pet{font-weight:700;font-size:0.83rem;color:var(--text);margin-bottom:3px;}
+    .history-change{font-size:0.8rem;}
+    .old-val{color:var(--muted2);text-decoration:line-through;margin-right:4px;}
+    .new-val{color:var(--green);font-weight:700;}
+    .history-meta{color:var(--muted);font-size:0.68rem;margin-top:4px;}
+    .history-reason{color:var(--blue);font-style:italic;}
+
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;align-items:center;justify-content:center;}
+    .modal-overlay.open{display:flex;}
+    .modal{background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:28px;width:100%;max-width:450px;margin:24px;}
+    .modal h2{font-size:1.2rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:20px;}
+    .form-group{margin-bottom:14px;}
+    .form-group label{display:block;font-size:0.66rem;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;}
+    .form-group input,.form-group select{width:100%;background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.88rem;padding:9px 12px;border-radius:9px;outline:none;transition:border-color 0.18s;}
+    .form-group input:focus,.form-group select:focus{border-color:var(--purple);}
+    .form-group select option{background:var(--card2);}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;}
+
+    .toast{position:fixed;bottom:24px;right:24px;z-index:300;background:var(--card);border:1px solid var(--border2);border-radius:11px;padding:12px 18px;font-weight:600;font-size:0.83rem;transform:translateY(80px);opacity:0;transition:all 0.3s;display:flex;align-items:center;gap:9px;}
+    .toast.show{transform:translateY(0);opacity:1;}
+    .toast.success{border-color:rgba(16,185,129,0.3);color:var(--green);}
+    .toast.error{border-color:rgba(239,68,68,0.3);color:var(--red);}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"</div>BGS Admin</div>
+  <span class="nav-user">Logged in as <strong>{{ user }}</strong></span>
+  <a href="/admin/logout" class="nav-logout">Log Out</a>
+</nav>
+
+<div class="layout">
+  <div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Pet Values</div>
+        <button class="btn btn-primary" onclick="openAddModal()">+ Add Pet</button>
+      </div>
+      <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="Search pets…" oninput="filterTable()">
+        <button class="filter-tab active" onclick="setRarityFilter('all',this)">All</button>
+        <button class="filter-tab" onclick="setRarityFilter('Limited Secret',this)">Ltd Secret</button>
+        <button class="filter-tab" onclick="setRarityFilter('Permanent Secret',this)">Perm Secret</button>
+        <button class="filter-tab" onclick="setRarityFilter('Limited Legendary',this)">Legendary</button>
+        <button class="filter-tab" onclick="setRarityFilter('Robux',this)">Robux</button>
+        <button class="filter-tab" onclick="setRarityFilter('Misc',this)">Misc</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="pet-table" id="petTable">
+          <thead>
+            <tr>
+              <th>Name</th><th>Rarity</th><th>Value</th><th>Shiny</th><th>Image</th><th>Note</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pet in pets %}
+            <tr data-rarity="{{ pet['rarity'] }}" data-name="{{ pet['name']|lower }}" data-value="{{ pet['value'] }}">
+              <td style="font-weight:700;font-size:0.88rem;">{{ pet['name'] }}</td>
+              <td>
+                <span class="rarity-badge r-{{ pet['rarity']|lower|replace(' ','-') }}">{{ pet['rarity'] }}</span>
+              </td>
+              <td>
+                <div id="row-{{ pet['id'] }}">
+                  <span class="value-display">{{ pet['value'] }}</span>
+                  <div class="edit-form" id="edit-{{ pet['id'] }}">
+                    <div class="field-row"><span class="field-lbl">Value</span><input type="text" value="{{ pet['value'] }}" id="val-{{ pet['id'] }}" style="width:130px;"></div>
+                    <div class="field-row"><span class="field-lbl">Shiny Val</span><input type="text" value="{{ pet['shiny_value'] or '' }}" id="shiny-{{ pet['id'] }}" style="width:130px;"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Prismatic</span><input type="text" value="{{ pet['prismatic_value'] or '' }}" id="prismatic-{{ pet['id'] }}" style="width:130px;border-color:rgba(168,85,247,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Rainbow</span><input type="text" value="{{ pet['rainbow_value'] or '' }}" id="rainbow-{{ pet['id'] }}" style="width:130px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl">Image URL</span><input type="text" value="{{ pet['image_url'] or '' }}" id="img-{{ pet['id'] }}" style="width:210px;"></div>
+                    <div class="field-row"><span class="field-lbl">Shiny Img</span><input type="text" value="{{ pet['shiny_image_url'] or '' }}" id="simg-{{ pet['id'] }}" style="width:210px;"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Prism Img</span><input type="text" value="{{ pet['prismatic_image_url'] or '' }}" id="pimg-{{ pet['id'] }}" style="width:210px;border-color:rgba(168,85,247,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Rainbow Img</span><input type="text" value="{{ pet['rainbow_image_url'] or '' }}" id="rimg-{{ pet['id'] }}" style="width:210px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl">Exists Norm</span><input type="text" value="{{ pet['exists_normal'] or '0' }}" id="enorm-{{ pet['id'] }}" style="width:80px;"></div>
+                    <div class="field-row"><span class="field-lbl">Exists Shiny</span><input type="text" value="{{ pet['exists_shiny'] or '0' }}" id="eshiny-{{ pet['id'] }}" style="width:80px;"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Exists Prism</span><input type="text" value="{{ pet['exists_prismatic'] or '0' }}" id="eprism-{{ pet['id'] }}" style="width:80px;border-color:rgba(168,85,247,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Exists Rnbw</span><input type="text" value="{{ pet['exists_rainbow'] or '0' }}" id="ernbw-{{ pet['id'] }}" style="width:80px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl">Demand</span><input type="number" min="0" max="10" value="{{ pet['demand'] or 0 }}" id="demand-{{ pet['id'] }}" style="width:70px;"></div>
+                    <div class="field-row"><span class="field-lbl">Trend</span>
+                      <select id="trend-{{ pet['id'] }}" style="width:110px;">
+                        <option value="stable" {% if pet['trend']=='stable' or not pet['trend'] %}selected{% endif %}>Stable</option>
+                        <option value="up" {% if pet['trend']=='up' %}selected{% endif %}>Rising</option>
+                        <option value="down" {% if pet['trend']=='down' %}selected{% endif %}>Falling</option>
+                      </select>
+                    </div>
+                    <div class="field-row"><span class="field-lbl">Description</span><input type="text" value="{{ pet.get('description','') or '' }}" id="desc-{{ pet['id'] }}" style="width:260px;"></div>
+                    <div class="field-row"><span class="field-lbl">Reason</span><input type="text" placeholder="Optional" id="reason-{{ pet['id'] }}" style="width:170px;"></div>
+                    <div style="display:flex;gap:7px;margin-top:4px;">
+                      <button class="btn btn-sm btn-save" onclick="saveValue({{ pet['id'] }})">Save</button>
+                      <button class="btn btn-sm btn-cancel" onclick="cancelEdit({{ pet['id'] }})">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td style="color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:0.78rem;">{{ pet['shiny_value'] if pet['shiny_value'] is not none else '—' }}</td>
+              <td>
+                {% if pet['image_url'] %}
+                  <img src="{{ pet['image_url'] }}" style="width:32px;height:32px;object-fit:contain;border-radius:5px;" onerror="this.style.display='none'">
+                {% else %}
+                  <span style="color:var(--muted);font-size:0.72rem;">—</span>
+                {% endif %}
+              </td>
+              <td style="color:var(--muted2);font-size:0.78rem;">{{ pet['note'] or '—' }}</td>
+              <td>
+                <div style="display:flex;gap:5px;">
+                  <button class="btn btn-sm btn-edit" onclick="startEdit({{ pet['id'] }})">Edit</button>
+                  <button class="btn btn-sm btn-delete" onclick="deletePet({{ pet['id'] }},'{{ pet['name'] }}')">Del</button>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div>
+    <div class="panel">
+      <div class="panel-header"><div class="panel-title">Recent Changes</div></div>
+      <div class="history-list">
+        {% for h in recent %}
+        <div class="history-item">
+          <div class="history-pet">{{ h['pet_name'] }}</div>
+          <div class="history-change">
+            <span class="old-val">{{ h['old_value'] }}</span>→<span class="new-val"> {{ h['new_value'] }}</span>
+          </div>
+          {% if h['reason'] %}<div class="history-reason">"{{ h['reason'] }}"</div>{% endif %}
+          <div class="history-meta">{{ h['changed_at'][:16] }} · {{ h['changed_by'] }}</div>
+        </div>
+        {% else %}
+        <div style="padding:24px;text-align:center;color:var(--muted);font-size:0.83rem;">No changes yet</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2>Add New Pet</h2>
+    <div class="form-group"><label>Pet Name</label><input type="text" id="newName" placeholder="e.g. Crystal Dragon"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Rarity</label>
+        <select id="newRarity">
+          <option value="Limited Secret">Limited Secret</option>
+          <option value="Permanent Secret">Permanent Secret</option>
+          <option value="Limited Legendary">Limited Legendary</option>
+          <option value="Robux">Robux</option>
+          <option value="Misc">Misc</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Value</label><input type="text" id="newValue" placeholder="e.g. 500, N/A" value="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Shiny Value</label><input type="text" id="newShiny" placeholder="e.g. 1000, N/A" value="0"></div>
+      <div class="form-group"><label>Note (optional)</label><input type="text" id="newNote" placeholder="e.g. Event only"></div>
+    </div>
+    <div class="form-group"><label>Image URL (optional)</label><input type="text" id="newImg" placeholder="https://..."></div>
+    <div class="form-group"><label>Shiny Image URL (optional)</label><input type="text" id="newSImg" placeholder="https://..."></div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeAddModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addPet()">Add Pet</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let rarityFilter='all';
+  const RARITY_ORDER={'Limited Secret':0,'Permanent Secret':1,'Limited Legendary':2,'Robux':3,'Misc':4};
+  function sortTable(){const tbody=document.querySelector('#petTable tbody');const rows=Array.from(tbody.querySelectorAll('tr'));rows.sort((a,b)=>{const ra=RARITY_ORDER[a.dataset.rarity]??99;const rb=RARITY_ORDER[b.dataset.rarity]??99;if(ra!==rb)return ra-rb;const va=parseFloat(a.dataset.value)||0;const vb=parseFloat(b.dataset.value)||0;if(vb!==va)return vb-va;return a.dataset.name.localeCompare(b.dataset.name);});rows.forEach(r=>tbody.appendChild(r));}
+  function setRarityFilter(r,btn){rarityFilter=r;document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');filterTable();}
+  function filterTable(){const q=document.getElementById('searchInput').value.toLowerCase();document.querySelectorAll('#petTable tbody tr').forEach(row=>{const nm=row.dataset.name.includes(q);const rm=rarityFilter==='all'||row.dataset.rarity===rarityFilter;row.style.display=(nm&&rm)?'':' none';});}
+  document.addEventListener('DOMContentLoaded',sortTable);
+  function startEdit(id){document.querySelectorAll('.edit-form').forEach(f=>f.style.display='none');document.getElementById(`edit-${id}`).style.display='flex';}
+  function cancelEdit(id){document.getElementById(`edit-${id}`).style.display='none';}
+  async function saveValue(id){
+    const v=document.getElementById(`val-${id}`).value.trim()||'0';
+    const s=document.getElementById(`shiny-${id}`).value.trim();
+    const prism=document.getElementById(`prismatic-${id}`)?.value.trim();
+    const rnbw=document.getElementById(`rainbow-${id}`)?.value.trim();
+    const img=document.getElementById(`img-${id}`).value.trim();
+    const simg=document.getElementById(`simg-${id}`).value.trim();
+    const pimg=document.getElementById(`pimg-${id}`)?.value.trim();
+    const rimg=document.getElementById(`rimg-${id}`)?.value.trim();
+    const en=document.getElementById(`enorm-${id}`).value.trim()||'0';
+    const es=document.getElementById(`eshiny-${id}`).value.trim()||'0';
+    const ep=document.getElementById(`eprism-${id}`)?.value.trim()||'0';
+    const er=document.getElementById(`ernbw-${id}`)?.value.trim()||'0';
+    const d=parseInt(document.getElementById(`demand-${id}`).value)||0;
+    const t=document.getElementById(`trend-${id}`).value;
+    const desc=document.getElementById(`desc-${id}`)?.value.trim();
+    const reason=document.getElementById(`reason-${id}`).value.trim();
+    const res=await fetch(`/admin/pets/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      value:v,shiny_value:s||null,prismatic_value:prism||null,rainbow_value:rnbw||null,
+      image_url:img||null,shiny_image_url:simg||null,prismatic_image_url:pimg||null,rainbow_image_url:rimg||null,
+      exists_normal:en,exists_shiny:es,exists_prismatic:ep,exists_rainbow:er,
+      demand:d,trend:t,description:desc||null,reason:reason||null
+    })});
+    if(res.ok){showToast('Saved!','success');setTimeout(()=>location.reload(),700);}else{const e=await res.json();showToast(e.detail||'Error','error');}
+  }
+  async function deletePet(id,name){if(!confirm(`Delete "${name}"?`))return;const res=await fetch(`/admin/pets/${id}`,{method:'DELETE'});if(res.ok){showToast(`${name} deleted`,'success');setTimeout(()=>location.reload(),700);}else showToast('Error deleting','error');}
+  function openAddModal(){document.getElementById('addModal').classList.add('open');}
+  function closeAddModal(){document.getElementById('addModal').classList.remove('open');}
+  async function addPet(){
+    const body={name:document.getElementById('newName').value.trim(),rarity:document.getElementById('newRarity').value,value:document.getElementById('newValue').value.trim()||'0',shiny_value:document.getElementById('newShiny').value.trim()||null,image_url:document.getElementById('newImg').value.trim()||null,shiny_image_url:document.getElementById('newSImg').value.trim()||null,note:document.getElementById('newNote').value.trim()||null};
+    if(!body.name){showToast('Name is required','error');return;}
+    const res=await fetch('/admin/pets/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(res.ok){showToast(`${body.name} added!`,'success');closeAddModal();setTimeout(()=>location.reload(),700);}else{const e=await res.json();showToast(e.detail||'Error adding','error');}
+  }
+  function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=(type==='success'?'✓ ':'✗ ')+msg;t.className=`toast ${type} show`;setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>
