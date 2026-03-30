@@ -208,7 +208,7 @@
 
 <!-- ADD MODAL -->
 <div class="modal-overlay" id="addModal">
-  <div class="modal">
+  <div class="modal" style="max-width:560px;max-height:90vh;overflow-y:auto;">
     <h2>Add New Pet</h2>
     <div class="form-group"><label>Pet Name</label><input type="text" id="newName" placeholder="e.g. Crystal Dragon"></div>
     <div class="form-row">
@@ -221,14 +221,37 @@
           <option value="Misc">Misc</option>
         </select>
       </div>
-      <div class="form-group"><label>Value</label><input type="text" id="newValue" placeholder="e.g. 500, N/A" value="0"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>Shiny Value</label><input type="text" id="newShiny" placeholder="e.g. 1000, N/A" value="0"></div>
       <div class="form-group"><label>Note (optional)</label><input type="text" id="newNote" placeholder="e.g. Event only"></div>
     </div>
-    <div class="form-group"><label>Image URL (optional)</label><input type="text" id="newImg" placeholder="https://..."></div>
-    <div class="form-group"><label>Shiny Image URL (optional)</label><input type="text" id="newSImg" placeholder="https://..."></div>
+
+    <div style="border-top:1px solid var(--border2);margin:14px 0 16px;padding-top:14px;">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Values</div>
+      <div class="form-row">
+        <div class="form-group"><label>Normal Value</label><input type="text" id="newValue" placeholder="e.g. 500, N/A, O/C" value="0"></div>
+        <div class="form-group"><label>Exists (Normal)</label><input type="text" id="newExistsNormal" placeholder="e.g. 28, 78+, Unknown" value="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label style="color:#7dd3fc;">✨ Shiny Value</label><input type="text" id="newShiny" placeholder="e.g. 1000, N/A" value="0"></div>
+        <div class="form-group"><label style="color:#7dd3fc;">Exists (Shiny)</label><input type="text" id="newExistsShiny" placeholder="e.g. 12, 45+" value="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label style="color:#fcd34d;">🌈 Rainbow Value</label><input type="text" id="newRainbow" placeholder="e.g. 2000, N/A" value="0"></div>
+        <div class="form-group"><label style="color:#fcd34d;">Exists (Rainbow)</label><input type="text" id="newExistsRainbow" placeholder="e.g. 5, 10+" value="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label style="color:#d8b4fe;">💎 Prismatic Value</label><input type="text" id="newPrismatic" placeholder="e.g. 5000, N/A" value="0"></div>
+        <div class="form-group"><label style="color:#d8b4fe;">Exists (Prismatic)</label><input type="text" id="newExistsPrismatic" placeholder="e.g. 3, 7+" value="0"></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border2);margin:0 0 16px;padding-top:14px;">
+      <div style="font-size:0.7rem;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;">Images</div>
+      <div class="form-group"><label>Normal Image URL</label><input type="text" id="newImg" placeholder="https://..."></div>
+      <div class="form-group"><label style="color:#7dd3fc;">✨ Shiny Image URL</label><input type="text" id="newSImg" placeholder="https://..."></div>
+      <div class="form-group"><label style="color:#fcd34d;">🌈 Rainbow Image URL</label><input type="text" id="newRImg" placeholder="https://..."></div>
+      <div class="form-group"><label style="color:#d8b4fe;">💎 Prismatic Image URL</label><input type="text" id="newPImg" placeholder="https://..."></div>
+    </div>
+
     <div class="modal-actions">
       <button class="btn btn-cancel" onclick="closeAddModal()">Cancel</button>
       <button class="btn btn-primary" onclick="addPet()">Add Pet</button>
@@ -276,7 +299,23 @@
   function openAddModal(){document.getElementById('addModal').classList.add('open');}
   function closeAddModal(){document.getElementById('addModal').classList.remove('open');}
   async function addPet(){
-    const body={name:document.getElementById('newName').value.trim(),rarity:document.getElementById('newRarity').value,value:document.getElementById('newValue').value.trim()||'0',shiny_value:document.getElementById('newShiny').value.trim()||null,image_url:document.getElementById('newImg').value.trim()||null,shiny_image_url:document.getElementById('newSImg').value.trim()||null,note:document.getElementById('newNote').value.trim()||null};
+    const body={
+      name:document.getElementById('newName').value.trim(),
+      rarity:document.getElementById('newRarity').value,
+      value:document.getElementById('newValue').value.trim()||'0',
+      shiny_value:document.getElementById('newShiny').value.trim()||null,
+      prismatic_value:document.getElementById('newPrismatic').value.trim()||null,
+      rainbow_value:document.getElementById('newRainbow').value.trim()||null,
+      image_url:document.getElementById('newImg').value.trim()||null,
+      shiny_image_url:document.getElementById('newSImg').value.trim()||null,
+      prismatic_image_url:document.getElementById('newPImg').value.trim()||null,
+      rainbow_image_url:document.getElementById('newRImg').value.trim()||null,
+      exists_normal:document.getElementById('newExistsNormal').value.trim()||'0',
+      exists_shiny:document.getElementById('newExistsShiny').value.trim()||'0',
+      exists_prismatic:document.getElementById('newExistsPrismatic').value.trim()||'0',
+      exists_rainbow:document.getElementById('newExistsRainbow').value.trim()||'0',
+      note:document.getElementById('newNote').value.trim()||null,
+    };
     if(!body.name){showToast('Name is required','error');return;}
     const res=await fetch('/admin/pets/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     if(res.ok){showToast(`${body.name} added!`,'success');closeAddModal();setTimeout(()=>location.reload(),700);}else{const e=await res.json();showToast(e.detail||'Error adding','error');}
