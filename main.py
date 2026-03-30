@@ -4,20 +4,19 @@ from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from database import init_db, seed_db, cleanup_db
+from database import init_db
 from routers import pets, admin, history
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
-    seed_db()
     yield
 
 
 app = FastAPI(
-    title="BGS.GG API",
-    description="Backend for OG Bubble Gum Simulator Value List",
+    title="BGS API",
+    description="Backend for BGS Value List",
     version="1.0.0",
     lifespan=lifespan,
 )
