@@ -64,6 +64,7 @@ class PetUpdate(BaseModel):
     rainbow_image_url: Optional[str] = None
     note: Optional[str] = None
     reason: Optional[str] = None
+    exists_normal: Optional[str] = "0"
     exists_shiny: Optional[str] = "0"
     exists_prismatic: Optional[str] = "0"
     exists_rainbow: Optional[str] = "0"
