@@ -90,10 +90,13 @@
     .demand-badge{display:inline-flex;align-items:center;gap:3px;font-size:0.65rem;font-weight:600;color:var(--muted2);}
     .demand-pip{width:3px;height:10px;border-radius:2px;background:var(--border2);}
     .demand-pip.on{background:linear-gradient(to top,var(--purple),var(--pink));}
+    .demand-num{font-size:0.65rem;font-weight:700;color:var(--muted2);margin-left:3px;}
     .trend-badge{font-size:0.65rem;font-weight:600;}
     .trend-up{color:var(--green);}
     .trend-down{color:var(--red);}
     .trend-stable{color:var(--muted);}
+    .exists-count{font-size:0.65rem;font-weight:600;color:var(--muted2);display:flex;align-items:center;gap:3px;}
+    .exists-dot{width:5px;height:5px;border-radius:50%;background:var(--green);opacity:0.7;}
 
     /* RARITY TAG */
     .rarity-mini{display:inline-block;border-radius:4px;padding:1px 6px;font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
@@ -227,7 +230,7 @@
   function phClass(r){if(!r)return'ph-rare';const l=r.toLowerCase();if(l.includes('secret'))return'ph-secret';if(l.includes('legendary'))return'ph-legendary';if(l.includes('limited'))return'ph-limited';return'ph-rare';}
   function rmClass(r){if(!r)return'rm-rare';const l=r.toLowerCase();if(l.includes('secret'))return'rm-secret';if(l.includes('legendary'))return'rm-legendary';if(l.includes('limited'))return'rm-limited';return'rm-rare';}
 
-  function demandPips(d){let h='';for(let i=0;i<5;i++)h+=`<span class="demand-pip${i<Math.ceil((d||0)/2)?' on':''}"></span>`;return h;}
+  function demandPips(d){let h='';for(let i=0;i<5;i++)h+=`<span class="demand-pip${i<Math.ceil((d||0)/2)?' on':''}"></span>`;h+=`<span class="demand-num">${d||0}/10</span>`;return h;}
   function trendHtml(t){if(t==='up')return'<span class="trend-badge trend-up">▲</span>';if(t==='down')return'<span class="trend-badge trend-down">▼</span>';return'<span class="trend-badge trend-stable">—</span>';}
 
   function tierBadge(mode){
@@ -235,6 +238,13 @@
     if(mode==='prismatic')return'<span class="prismatic-indicator">💎 Prismatic</span>';
     if(mode==='rainbow')return'<span class="rainbow-indicator">🌈 Rainbow</span>';
     return'';
+  }
+
+  function getExists(p){
+    if(activeMode==='shiny')return p.exists_shiny||'0';
+    if(activeMode==='rainbow')return p.exists_rainbow||'0';
+    if(activeMode==='prismatic')return p.exists_prismatic||'0';
+    return p.exists_normal||'0';
   }
 
   function renderCard(p,i){
@@ -246,6 +256,8 @@
     const displayVal=fv(p[MODE_FIELD[activeMode]]);
     const valColor=MODE_COLOR[activeMode];
     const modeClass=activeMode!=='normal'?` ${activeMode}-mode`:'';
+    const existsVal=getExists(p);
+    const existsHtml=existsVal&&existsVal!=='0'?`<span class="exists-count"><span class="exists-dot"></span>${existsVal}</span>`:'';
     return`<a href="/pet/${p.id}" class="pet-card ${rarityCard(p.rarity)}${modeClass}" style="animation-delay:${Math.min(i*0.03,0.5)}s">
       <div class="pet-img-wrap">${img}${activeMode!=='normal'?tierBadge(activeMode):''}</div>
       <div class="pet-card-body">
@@ -257,6 +269,7 @@
         </div>
         <div class="value-row">
           <span class="value-normal" style="color:${valColor}">${displayVal}</span>
+          ${existsHtml}
         </div>
       </div>
     </a>`;
