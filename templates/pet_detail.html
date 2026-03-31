@@ -8,21 +8,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <style>
-    :root{
-      --bg:#030508;--surface:#050912;--card:#080d1a;--card2:#0c1220;
-      --border:#0f1b2e;--border2:#162240;
-      --pink:#3b82f6;--purple:#2563eb;--blue:#38bdf8;
-      --yellow:#f59e0b;--green:#10b981;--red:#ef4444;
-      --text:#e8e4f8;--muted:#2a3a5c;--muted2:#6b82a8;
-    }
+    :root{--bg:#030508;--surface:#050912;--card:#080d1a;--card2:#0c1220;--border:#0f1b2e;--border2:#162240;--pink:#3b82f6;--purple:#2563eb;--blue:#38bdf8;--yellow:#f59e0b;--green:#10b981;--red:#ef4444;--text:#e8e4f8;--muted:#2a3a5c;--muted2:#6b82a8;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;}
     .ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
     .blob{position:absolute;border-radius:50%;filter:blur(120px);}
     .blob-1{width:600px;height:600px;background:var(--purple);top:-200px;left:-200px;opacity:0.08;}
     .blob-2{width:400px;height:400px;background:var(--pink);bottom:-100px;right:-100px;opacity:0.06;}
-
-    /* NAV */
     nav{position:sticky;top:0;z-index:100;background:rgba(5,5,7,0.9);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;height:56px;}
     .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;}
     .logo-mark{width:26px;height:26px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 0 14px rgba(37,99,235,0.35);}
@@ -33,16 +25,11 @@
     .nav-discord{margin-left:10px;background:#5865F2!important;color:#fff!important;border-radius:8px!important;padding:6px 13px!important;font-weight:600!important;font-size:0.8rem!important;}
     .nav-lock{margin-left:6px;text-decoration:none;opacity:0.2;font-size:14px;padding:7px 8px;transition:opacity 0.2s;}
     .nav-lock:hover{opacity:0.6;}
-
     .page{max-width:1000px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;}
-
     .back-btn{display:inline-flex;align-items:center;gap:7px;color:var(--muted2);text-decoration:none;font-weight:500;font-size:0.83rem;padding:7px 14px;border-radius:9px;border:1px solid var(--border2);background:var(--card);transition:all 0.18s;margin:24px 0 0 0;}
     .back-btn:hover{color:var(--text);border-color:var(--purple);}
-
-    /* PET HERO */
     .pet-hero{display:flex;gap:28px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px;margin:20px 0;}
-    .pet-hero-img-wrap{position:relative;flex-shrink:0;}
-    .pet-hero-img{width:140px;height:140px;border-radius:16px;background:var(--surface);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .pet-hero-img{width:140px;height:140px;flex-shrink:0;border-radius:16px;background:var(--surface);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;overflow:hidden;}
     .pet-hero-img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;}
     .pet-hero-img .placeholder{font-size:0.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;}
     .pet-hero-info{flex:1;}
@@ -52,48 +39,45 @@
     .r-legendary{background:rgba(245,158,11,0.12);color:var(--yellow);border:1px solid rgba(245,158,11,0.2);}
     .r-limited{background:rgba(59,130,246,0.12);color:var(--pink);border:1px solid rgba(59,130,246,0.2);}
     .r-rare{background:rgba(56,189,248,0.08);color:var(--blue);border:1px solid rgba(56,189,248,0.15);}
-
-    /* TOGGLE */
-    .mode-toggle{display:flex;background:var(--surface);border:1px solid var(--border2);border-radius:9px;overflow:hidden;width:fit-content;margin-bottom:16px;}
-    .mode-btn{padding:7px 18px;font-family:'Outfit',sans-serif;font-weight:600;font-size:0.8rem;border:none;cursor:pointer;transition:all 0.2s;background:transparent;color:var(--muted2);}
-    .mode-btn.active{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;}
-
-    /* STATS ROW */
+    /* MODE TOGGLE */
+    .mode-toggle{display:flex;background:var(--surface);border:1px solid var(--border2);border-radius:9px;overflow:hidden;width:fit-content;margin-bottom:16px;flex-wrap:wrap;}
+    .mode-btn{padding:7px 15px;font-family:'Outfit',sans-serif;font-weight:600;font-size:0.78rem;border:none;cursor:pointer;transition:all 0.2s;background:transparent;color:var(--muted2);white-space:nowrap;}
+    .mode-btn.active{color:#fff;}
+    .mode-btn.btn-normal.active{background:linear-gradient(135deg,var(--blue),var(--purple));}
+    .mode-btn.btn-shiny.active{background:linear-gradient(135deg,#38bdf8,#818cf8);}
+    .mode-btn.btn-rainbow.active{background:linear-gradient(90deg,#ef4444,#f97316,#f59e0b,#22c55e,#3b82f6,#a855f7);}
+    .mode-btn.btn-prismatic.active{background:linear-gradient(135deg,#a855f7,#ec4899,#f59e0b);}
+    /* STATS */
     .pet-stats-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
     .pet-stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 16px;min-width:100px;}
-    .pet-stat-label{color:var(--muted);font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px;}
-    .pet-stat-value{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--yellow);}
-    .pet-stat-value.shiny{color:var(--blue);}
-    .pet-stat-value.exists{color:var(--green);}
-    .pet-stat-value.na{color:var(--muted2);font-size:0.95rem;}
-
-    /* DEMAND */
+    .pet-stat-label{color:var(--muted2);font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px;}
+    .pet-stat-value{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;}
     .demand-wrap{margin-top:12px;}
-    .demand-label{color:var(--muted);font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+    .demand-label{color:var(--muted2);font-size:0.65rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
     .demand-bar-bg{height:6px;background:var(--surface);border-radius:999px;border:1px solid var(--border2);overflow:hidden;width:200px;}
     .demand-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--pink));transition:width 0.8s ease;}
     .demand-text{font-weight:700;font-size:0.8rem;margin-top:5px;color:var(--text);}
     .trend-up{color:var(--green);}
     .trend-down{color:var(--red);}
     .trend-stable{color:var(--blue);}
-
     /* GRID */
     .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
     @media(max-width:700px){.detail-grid{grid-template-columns:1fr;}.pet-hero{flex-direction:column;}}
-
     .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;}
     .panel-title{font-size:0.9rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em;}
     .panel-dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));}
-
     .chart-wrap{position:relative;height:190px;}
-
-    .exists-row{display:flex;gap:12px;}
-    .exists-card{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
-    .exists-num{font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--green);}
-    .exists-num.shiny{color:var(--blue);}
+    /* CIRCULATION */
+    .exists-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .exists-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;transition:all 0.2s;}
+    .exists-card.active-tier{border-color:rgba(56,189,248,0.35);box-shadow:0 0 16px rgba(56,189,248,0.08);}
+    .exists-num{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--green);}
+    .exists-num.c-shiny{color:var(--blue);}
+    .exists-num.c-rainbow{color:#fcd34d;}
+    .exists-num.c-prismatic{color:#d8b4fe;}
     .exists-lbl{color:var(--muted2);font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px;}
-
-    .history-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(24,24,42,0.8);font-size:0.82rem;}
+    /* HISTORY */
+    .history-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(15,27,46,0.8);font-size:0.82rem;}
     .history-item:last-child{border-bottom:none;}
     .history-change{font-weight:600;}
     .old-val{color:var(--muted2);text-decoration:line-through;margin-right:5px;}
@@ -102,7 +86,6 @@
     .history-reason{color:var(--blue);font-size:0.7rem;font-style:italic;}
     .loading-text{color:var(--muted2);font-size:0.875rem;padding:16px 0;}
     .error-msg{color:var(--red);font-size:0.875rem;padding:16px 0;}
-
     footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
     .footer-brand{font-weight:700;font-size:0.85rem;background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
     .footer-text{color:var(--muted);font-size:0.75rem;}
@@ -110,7 +93,6 @@
 </head>
 <body>
 <div class="ambient"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
-
 <nav>
   <a href="/" class="nav-logo">
     <div class="logo-mark">🫧</div>
@@ -137,29 +119,63 @@
 <script>
   const API='';
   const petId=window.location.pathname.split('/').pop();
+  let _pet={};
 
-  function fv(v){if(!v||v==='null'||v==='0')return'0';const u=v.toString().toUpperCase().trim();if(u==='N/A'||u==='O/C')return u;const n=parseFloat(v);if(isNaN(n))return v;if(n>=1e6)return(n/1e6).toFixed(1).replace(/\.0$/,'')+'M';if(n>=1000)return(n/1000).toFixed(1).replace(/\.0$/,'')+'K';return n.toString();}
+  const TIER_COLORS={normal:'var(--yellow)',shiny:'var(--blue)',rainbow:'#fcd34d',prismatic:'#d8b4fe'};
+  const TIER_LABELS={normal:'Value',shiny:'✨ Shiny Value',rainbow:'🌈 Rainbow Value',prismatic:'💎 Prismatic Value'};
+
+  function fv(v){if(!v||v==='null'||v==='0')return'N/A';const u=v.toString().toUpperCase().trim();if(u==='N/A'||u==='O/C')return u;const n=parseFloat(v);if(isNaN(n))return v;if(n>=1e6)return(n/1e6).toFixed(1).replace(/\.0$/,'')+'M';if(n>=1000)return(n/1000).toFixed(1).replace(/\.0$/,'')+'K';return n.toString();}
   function rc(r){if(!r)return'r-rare';const l=r.toLowerCase();if(l.includes('secret'))return'r-secret';if(l.includes('legendary'))return'r-legendary';if(l.includes('limited'))return'r-limited';return'r-rare';}
   function ti(t){if(t==='up')return'<span class="trend-up">▲ Rising</span>';if(t==='down')return'<span class="trend-down">▼ Falling</span>';return'<span class="trend-stable">● Stable</span>';}
   function dl(d){if(d>=9)return'Extreme';if(d>=7)return'Very High';if(d>=5)return'High';if(d>=3)return'Medium';if(d>=1)return'Low';return'None';}
 
-  function switchMode(mode){
-    const vd=document.getElementById('val-display');
-    const ed=document.getElementById('exists-display');
+  function getImgForTier(tier){
+    const p=_pet;
+    if(tier==='shiny'&&p.shiny_image_url)return p.shiny_image_url;
+    if(tier==='rainbow'&&p.rainbow_image_url)return p.rainbow_image_url;
+    if(tier==='prismatic'&&p.prismatic_image_url)return p.prismatic_image_url;
+    return p.image_url||null;
+  }
+  function getValForTier(tier){
+    const p=_pet;
+    if(tier==='shiny')return fv(p.shiny_value);
+    if(tier==='rainbow')return fv(p.rainbow_value);
+    if(tier==='prismatic')return fv(p.prismatic_value);
+    return fv(p.value);
+  }
+  function getExistsForTier(tier){
+    const p=_pet;
+    if(tier==='shiny')return p.exists_shiny||'0';
+    if(tier==='rainbow')return p.exists_rainbow||'0';
+    if(tier==='prismatic')return p.exists_prismatic||'0';
+    return p.exists_normal||'0';
+  }
+
+  function switchMode(tier){
+    // update buttons
+    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+    const btn=document.getElementById('btn-'+tier);
+    if(btn)btn.classList.add('active');
+
+    // update main image
     const pi=document.getElementById('pet-main-img');
-    const bn=document.getElementById('btn-normal');
-    const bs=document.getElementById('btn-shiny');
-    if(!vd)return;
-    if(mode==='shiny'){
-      vd.textContent=window._petShiny;vd.style.color='var(--blue)';
-      ed.textContent=window._existsShiny;
-      bs.classList.add('active');bn.classList.remove('active');
-      if(pi&&window._shinyImg)pi.src=window._shinyImg;
-    }else{
-      vd.textContent=window._petNormal;vd.style.color='var(--yellow)';
-      ed.textContent=window._existsNormal;
-      bn.classList.add('active');bs.classList.remove('active');
-      if(pi&&window._normalImg)pi.src=window._normalImg;
+    const src=getImgForTier(tier);
+    if(pi&&src)pi.src=src;
+
+    // update active value display
+    const vd=document.getElementById('val-display');
+    const vl=document.getElementById('val-label');
+    if(vd){vd.textContent=getValForTier(tier);vd.style.color=TIER_COLORS[tier];}
+    if(vl)vl.textContent=TIER_LABELS[tier];
+
+    // update circulation — highlight active card and update its count
+    document.querySelectorAll('.exists-card').forEach(c=>c.classList.remove('active-tier'));
+    const activeCard=document.getElementById('exists-'+tier);
+    if(activeCard){
+      activeCard.classList.add('active-tier');
+      // also update the "active" exists count shown in stats row
+      const ed=document.getElementById('exists-display');
+      if(ed)ed.textContent=getExistsForTier(tier);
     }
   }
 
@@ -169,20 +185,28 @@
         fetch(`${API}/api/pets/${petId}`),
         fetch(`${API}/api/history/${petId}?limit=20`)
       ]);
-      const pet=await pr.json();
+      _pet=await pr.json();
+      const pet=_pet;
       const history=await hr.json();
       document.title=`${pet.name} – BGS`;
+
       const demand=pet.demand||0;
-      const imgHtml=pet.image_url
-        ?`<img id="pet-main-img" src="${pet.image_url}" alt="${pet.name}">`
+      const imgSrc=pet.image_url;
+      const imgHtml=imgSrc
+        ?`<img id="pet-main-img" src="${imgSrc}" alt="${pet.name}">`
         :`<div class="placeholder">${pet.name.split(' ').map(w=>w[0]).join('')}</div>`;
-      const hasShiny=pet.shiny_value&&pet.shiny_value!=='null';
-      window._petNormal=fv(pet.value);
-      window._petShiny=hasShiny?fv(pet.shiny_value):'N/A';
-      window._existsNormal=pet.exists_normal||'0';
-      window._existsShiny=pet.exists_shiny||'0';
-      window._normalImg=pet.image_url;
-      window._shinyImg=pet.shiny_image_url;
+
+      const hasShiny=pet.shiny_value&&pet.shiny_value!=='null'&&pet.shiny_value!=='0';
+      const hasRainbow=pet.rainbow_value&&pet.rainbow_value!=='null'&&pet.rainbow_value!=='0';
+      const hasPrismatic=pet.prismatic_value&&pet.prismatic_value!=='null'&&pet.prismatic_value!=='0';
+      const hasAnyTier=hasShiny||hasRainbow||hasPrismatic;
+
+      const toggleHtml=hasAnyTier?`<div class="mode-toggle">
+        <button id="btn-normal" class="mode-btn btn-normal active" onclick="switchMode('normal')">Normal</button>
+        ${hasShiny?`<button id="btn-shiny" class="mode-btn btn-shiny" onclick="switchMode('shiny')">✨ Shiny</button>`:''}
+        ${hasRainbow?`<button id="btn-rainbow" class="mode-btn btn-rainbow" onclick="switchMode('rainbow')">🌈 Rainbow</button>`:''}
+        ${hasPrismatic?`<button id="btn-prismatic" class="mode-btn btn-prismatic" onclick="switchMode('prismatic')">💎 Prismatic</button>`:''}
+      </div>`:'';
 
       const histHtml=history.length>0
         ?history.map(h=>`<div class="history-item">
@@ -193,26 +217,21 @@
 
       document.getElementById('content').innerHTML=`
         <div class="pet-hero">
-          <div class="pet-hero-img-wrap">
-            <div class="pet-hero-img">${imgHtml}</div>
-          </div>
+          <div class="pet-hero-img">${imgHtml}</div>
           <div class="pet-hero-info">
             <div class="pet-hero-name">${pet.name}</div>
             <span class="rarity-tag ${rc(pet.rarity)}">${pet.rarity}</span>
             ${pet.note?`<div style="font-size:0.78rem;color:var(--pink);font-weight:600;margin-bottom:10px;">${pet.note}</div>`:''}
-            ${hasShiny?`<div class="mode-toggle">
-              <button id="btn-normal" class="mode-btn active" onclick="switchMode('normal')">Normal</button>
-              <button id="btn-shiny" class="mode-btn" onclick="switchMode('shiny')">✨ Shiny</button>
-            </div>`:''}
+            ${toggleHtml}
             <div class="pet-stats-row">
               <div class="pet-stat">
-                <div class="pet-stat-label">Value</div>
-                <div class="pet-stat-value" id="val-display">${fv(pet.value)}</div>
+                <div class="pet-stat-label" id="val-label">Value</div>
+                <div class="pet-stat-value" id="val-display" style="color:var(--yellow)">${fv(pet.value)}</div>
               </div>
-              ${hasShiny?`<div class="pet-stat">
-                <div class="pet-stat-label">Shiny Value</div>
-                <div class="pet-stat-value shiny">${fv(pet.shiny_value)}</div>
-              </div>`:''}
+              <div class="pet-stat">
+                <div class="pet-stat-label">Exists</div>
+                <div class="pet-stat-value" id="exists-display" style="color:var(--green)">${pet.exists_normal||'0'}</div>
+              </div>
               <div class="pet-stat">
                 <div class="pet-stat-label">Trend</div>
                 <div class="pet-stat-value" style="font-size:0.9rem;">${ti(pet.trend)}</div>
@@ -233,14 +252,22 @@
           </div>
           <div class="panel">
             <div class="panel-title"><span class="panel-dot"></span>Circulation</div>
-            <div class="exists-row">
-              <div class="exists-card">
-                <div class="exists-num" id="exists-display">${pet.exists_normal||'0'}</div>
+            <div class="exists-grid">
+              <div class="exists-card active-tier" id="exists-normal">
+                <div class="exists-num">${pet.exists_normal||'0'}</div>
                 <div class="exists-lbl">Normal</div>
               </div>
-              ${hasShiny?`<div class="exists-card">
-                <div class="exists-num shiny">${pet.exists_shiny||'0'}</div>
-                <div class="exists-lbl">Shiny</div>
+              ${hasShiny?`<div class="exists-card" id="exists-shiny">
+                <div class="exists-num c-shiny">${pet.exists_shiny||'0'}</div>
+                <div class="exists-lbl">✨ Shiny</div>
+              </div>`:''}
+              ${hasRainbow?`<div class="exists-card" id="exists-rainbow">
+                <div class="exists-num c-rainbow">${pet.exists_rainbow||'0'}</div>
+                <div class="exists-lbl">🌈 Rainbow</div>
+              </div>`:''}
+              ${hasPrismatic?`<div class="exists-card" id="exists-prismatic">
+                <div class="exists-num c-prismatic">${pet.exists_prismatic||'0'}</div>
+                <div class="exists-lbl">💎 Prismatic</div>
               </div>`:''}
             </div>
             ${pet.description?`<div style="margin-top:14px;color:var(--muted2);font-size:0.83rem;line-height:1.65;">${pet.description}</div>`:''}
@@ -258,29 +285,8 @@
         const vals=history.slice().reverse().map(h=>parseFloat(h.new_value)||0);
         new Chart(ctx,{
           type:'line',
-          data:{
-            labels,
-            datasets:[{
-              label:'Value',
-              data:vals,
-              borderColor:'#2563eb',
-              backgroundColor:'rgba(37,99,235,0.08)',
-              borderWidth:2,
-              fill:true,
-              tension:0.4,
-              pointBackgroundColor:'#2563eb',
-              pointRadius:3,
-              pointHoverRadius:5,
-            }]
-          },
-          options:{
-            responsive:true,maintainAspectRatio:false,
-            plugins:{legend:{display:false},tooltip:{backgroundColor:'#080d1a',borderColor:'#162240',borderWidth:1,titleColor:'#e8e4f8',bodyColor:'#6b82a8'}},
-            scales:{
-              x:{grid:{color:'rgba(24,24,42,0.8)'},ticks:{color:'#2a3a5c',font:{size:10}}},
-              y:{grid:{color:'rgba(24,24,42,0.8)'},ticks:{color:'#2a3a5c',font:{size:10}}}
-            }
-          }
+          data:{labels,datasets:[{label:'Value',data:vals,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.08)',borderWidth:2,fill:true,tension:0.4,pointBackgroundColor:'#2563eb',pointRadius:3,pointHoverRadius:5}]},
+          options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080d1a',borderColor:'#162240',borderWidth:1,titleColor:'#e8e4f8',bodyColor:'#6b82a8'}},scales:{x:{grid:{color:'rgba(15,27,46,0.8)'},ticks:{color:'#2a3a5c',font:{size:10}}},y:{grid:{color:'rgba(15,27,46,0.8)'},ticks:{color:'#2a3a5c',font:{size:10}}}}}
         });
       }else if(ctx){
         ctx.parentElement.innerHTML='<div class="loading-text">No history data to chart.</div>';

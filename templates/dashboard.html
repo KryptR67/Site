@@ -113,6 +113,15 @@
         <button class="filter-tab" onclick="setRarityFilter('Limited Legendary',this)">Legendary</button>
         <button class="filter-tab" onclick="setRarityFilter('Robux',this)">Robux</button>
         <button class="filter-tab" onclick="setRarityFilter('Misc',this)">Misc</button>
+        <select id="adminSort" onchange="sortTable()" style="background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.72rem;font-weight:600;padding:6px 10px;border-radius:8px;outline:none;cursor:pointer;">
+          <option value="rarity">Sort: Rarity</option>
+          <option value="value_desc">Sort: Value ↓</option>
+          <option value="value_asc">Sort: Value ↑</option>
+          <option value="rainbow_desc">Sort: Rainbow ↓</option>
+          <option value="prismatic_desc">Sort: Prismatic ↓</option>
+          <option value="demand_desc">Sort: Demand ↓</option>
+          <option value="name_asc">Sort: Name A–Z</option>
+        </select>
       </div>
       <div style="overflow-x:auto;">
         <table class="pet-table" id="petTable">
@@ -123,7 +132,7 @@
           </thead>
           <tbody>
             {% for pet in pets %}
-            <tr data-rarity="{{ pet['rarity'] }}" data-name="{{ pet['name']|lower }}" data-value="{{ pet['value'] }}">
+            <tr data-rarity="{{ pet['rarity'] }}" data-name="{{ pet['name']|lower }}" data-value="{{ pet['value'] }}" data-rainbow="{{ pet['rainbow_value'] or '0' }}" data-prismatic="{{ pet['prismatic_value'] or '0' }}" data-demand="{{ pet['demand'] or '0' }}">
               <td style="font-weight:700;font-size:0.88rem;">{{ pet['name'] }}</td>
               <td>
                 <span class="rarity-badge r-{{ pet['rarity']|lower|replace(' ','-') }}">{{ pet['rarity'] }}</span>
@@ -264,7 +273,27 @@
 <script>
   let rarityFilter='all';
   const RARITY_ORDER={'Limited Secret':0,'Permanent Secret':1,'Limited Legendary':2,'Robux':3,'Misc':4};
-  function sortTable(){const tbody=document.querySelector('#petTable tbody');const rows=Array.from(tbody.querySelectorAll('tr'));rows.sort((a,b)=>{const ra=RARITY_ORDER[a.dataset.rarity]??99;const rb=RARITY_ORDER[b.dataset.rarity]??99;if(ra!==rb)return ra-rb;const va=parseFloat(a.dataset.value)||0;const vb=parseFloat(b.dataset.value)||0;if(vb!==va)return vb-va;return a.dataset.name.localeCompare(b.dataset.name);});rows.forEach(r=>tbody.appendChild(r));}
+  function sortTable(){
+    const mode=document.getElementById('adminSort')?.value||'rarity';
+    const tbody=document.querySelector('#petTable tbody');
+    const rows=Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a,b)=>{
+      if(mode==='rarity'){
+        const ra=RARITY_ORDER[a.dataset.rarity]??99;
+        const rb=RARITY_ORDER[b.dataset.rarity]??99;
+        if(ra!==rb)return ra-rb;
+        return(parseFloat(b.dataset.value)||0)-(parseFloat(a.dataset.value)||0);
+      }
+      if(mode==='value_desc')return(parseFloat(b.dataset.value)||0)-(parseFloat(a.dataset.value)||0);
+      if(mode==='value_asc')return(parseFloat(a.dataset.value)||0)-(parseFloat(b.dataset.value)||0);
+      if(mode==='rainbow_desc')return(parseFloat(b.dataset.rainbow)||0)-(parseFloat(a.dataset.rainbow)||0);
+      if(mode==='prismatic_desc')return(parseFloat(b.dataset.prismatic)||0)-(parseFloat(a.dataset.prismatic)||0);
+      if(mode==='demand_desc')return(parseFloat(b.dataset.demand)||0)-(parseFloat(a.dataset.demand)||0);
+      if(mode==='name_asc')return a.dataset.name.localeCompare(b.dataset.name);
+      return 0;
+    });
+    rows.forEach(r=>tbody.appendChild(r));
+  }
   function setRarityFilter(r,btn){rarityFilter=r;document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');filterTable();}
   function filterTable(){const q=document.getElementById('searchInput').value.toLowerCase();document.querySelectorAll('#petTable tbody tr').forEach(row=>{const nm=row.dataset.name.includes(q);const rm=rarityFilter==='all'||row.dataset.rarity===rarityFilter;row.style.display=(nm&&rm)?'':' none';});}
   document.addEventListener('DOMContentLoaded',sortTable);
