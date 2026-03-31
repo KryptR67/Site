@@ -20,6 +20,9 @@ class PetOut(BaseModel):
     exists_prismatic: Optional[str]
     exists_rainbow: Optional[str]
     demand: Optional[int]
+    shiny_demand: Optional[int]
+    prismatic_demand: Optional[int]
+    rainbow_demand: Optional[int]
     trend: Optional[str]
     description: Optional[str]
     updated_at: str
@@ -42,11 +45,15 @@ class PetCreate(BaseModel):
     exists_prismatic: Optional[str] = "0"
     exists_rainbow: Optional[str] = "0"
     demand: Optional[int] = 0
+    shiny_demand: Optional[int] = 0
+    prismatic_demand: Optional[int] = 0
+    rainbow_demand: Optional[int] = 0
     trend: Optional[str] = "stable"
     description: Optional[str] = None
 
 
 class PetUpdate(BaseModel):
+    rarity: Optional[str] = None
     value: str
     shiny_value: Optional[str] = None
     prismatic_value: Optional[str] = None
@@ -57,11 +64,13 @@ class PetUpdate(BaseModel):
     rainbow_image_url: Optional[str] = None
     note: Optional[str] = None
     reason: Optional[str] = None
-    exists_normal: Optional[str] = "0"
     exists_shiny: Optional[str] = "0"
     exists_prismatic: Optional[str] = "0"
     exists_rainbow: Optional[str] = "0"
     demand: Optional[int] = 0
+    shiny_demand: Optional[int] = 0
+    prismatic_demand: Optional[int] = 0
+    rainbow_demand: Optional[int] = 0
     trend: Optional[str] = "stable"
     description: Optional[str] = None
 

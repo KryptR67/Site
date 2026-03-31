@@ -141,27 +141,40 @@
                 <div id="row-{{ pet['id'] }}">
                   <span class="value-display">{{ pet['value'] }}</span>
                   <div class="edit-form" id="edit-{{ pet['id'] }}">
+                    <div class="field-row"><span class="field-lbl">Rarity</span>
+                      <select id="rarity-{{ pet['id'] }}" style="width:180px;background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:'Outfit',sans-serif;padding:5px 9px;border-radius:7px;outline:none;">
+                        <option value="Limited Secret" {% if pet['rarity']=='Limited Secret' %}selected{% endif %}>Limited Secret</option>
+                        <option value="Permanent Secret" {% if pet['rarity']=='Permanent Secret' %}selected{% endif %}>Permanent Secret</option>
+                        <option value="Limited Legendary" {% if pet['rarity']=='Limited Legendary' %}selected{% endif %}>Limited Legendary</option>
+                        <option value="Robux" {% if pet['rarity']=='Robux' %}selected{% endif %}>Robux</option>
+                        <option value="Misc" {% if pet['rarity']=='Misc' %}selected{% endif %}>Misc</option>
+                      </select>
+                    </div>
                     <div class="field-row"><span class="field-lbl">Value</span><input type="text" value="{{ pet['value'] }}" id="val-{{ pet['id'] }}" style="width:130px;"></div>
                     <div class="field-row"><span class="field-lbl">Shiny Val</span><input type="text" value="{{ pet['shiny_value'] or '' }}" id="shiny-{{ pet['id'] }}" style="width:130px;"></div>
-                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Prismatic</span><input type="text" value="{{ pet['prismatic_value'] or '' }}" id="prismatic-{{ pet['id'] }}" style="width:130px;border-color:rgba(168,85,247,0.3);"></div>
-                    <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Rainbow</span><input type="text" value="{{ pet['rainbow_value'] or '' }}" id="rainbow-{{ pet['id'] }}" style="width:130px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Rainbow Val</span><input type="text" value="{{ pet['rainbow_value'] or '' }}" id="rainbow-{{ pet['id'] }}" style="width:130px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Prismatic Val</span><input type="text" value="{{ pet['prismatic_value'] or '' }}" id="prismatic-{{ pet['id'] }}" style="width:130px;border-color:rgba(168,85,247,0.3);"></div>
                     <div class="field-row"><span class="field-lbl">Image URL</span><input type="text" value="{{ pet['image_url'] or '' }}" id="img-{{ pet['id'] }}" style="width:210px;"></div>
                     <div class="field-row"><span class="field-lbl">Shiny Img</span><input type="text" value="{{ pet['shiny_image_url'] or '' }}" id="simg-{{ pet['id'] }}" style="width:210px;"></div>
-                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Prism Img</span><input type="text" value="{{ pet['prismatic_image_url'] or '' }}" id="pimg-{{ pet['id'] }}" style="width:210px;border-color:rgba(168,85,247,0.3);"></div>
                     <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Rainbow Img</span><input type="text" value="{{ pet['rainbow_image_url'] or '' }}" id="rimg-{{ pet['id'] }}" style="width:210px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Prism Img</span><input type="text" value="{{ pet['prismatic_image_url'] or '' }}" id="pimg-{{ pet['id'] }}" style="width:210px;border-color:rgba(168,85,247,0.3);"></div>
                     <div class="field-row"><span class="field-lbl">Exists Norm</span><input type="text" value="{{ pet['exists_normal'] or '0' }}" id="enorm-{{ pet['id'] }}" style="width:80px;"></div>
                     <div class="field-row"><span class="field-lbl">Exists Shiny</span><input type="text" value="{{ pet['exists_shiny'] or '0' }}" id="eshiny-{{ pet['id'] }}" style="width:80px;"></div>
-                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Exists Prism</span><input type="text" value="{{ pet['exists_prismatic'] or '0' }}" id="eprism-{{ pet['id'] }}" style="width:80px;border-color:rgba(168,85,247,0.3);"></div>
                     <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Exists Rnbw</span><input type="text" value="{{ pet['exists_rainbow'] or '0' }}" id="ernbw-{{ pet['id'] }}" style="width:80px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Exists Prism</span><input type="text" value="{{ pet['exists_prismatic'] or '0' }}" id="eprism-{{ pet['id'] }}" style="width:80px;border-color:rgba(168,85,247,0.3);"></div>
                     <div class="field-row"><span class="field-lbl">Demand</span><input type="number" min="0" max="10" value="{{ pet['demand'] or 0 }}" id="demand-{{ pet['id'] }}" style="width:70px;"></div>
+                    <div class="field-row"><span class="field-lbl">Shiny Demand</span><input type="number" min="0" max="10" value="{{ pet['shiny_demand'] or 0 }}" id="sdemand-{{ pet['id'] }}" style="width:70px;"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#fcd34d;">Rnbw Demand</span><input type="number" min="0" max="10" value="{{ pet['rainbow_demand'] or 0 }}" id="rdemand-{{ pet['id'] }}" style="width:70px;border-color:rgba(251,191,36,0.3);"></div>
+                    <div class="field-row"><span class="field-lbl" style="color:#d8b4fe;">Prism Demand</span><input type="number" min="0" max="10" value="{{ pet['prismatic_demand'] or 0 }}" id="pdemand-{{ pet['id'] }}" style="width:70px;border-color:rgba(168,85,247,0.3);"></div>
                     <div class="field-row"><span class="field-lbl">Trend</span>
-                      <select id="trend-{{ pet['id'] }}" style="width:110px;">
+                      <select id="trend-{{ pet['id'] }}" style="width:110px;background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:'Outfit',sans-serif;padding:5px 9px;border-radius:7px;outline:none;">
                         <option value="stable" {% if pet['trend']=='stable' or not pet['trend'] %}selected{% endif %}>Stable</option>
                         <option value="up" {% if pet['trend']=='up' %}selected{% endif %}>Rising</option>
                         <option value="down" {% if pet['trend']=='down' %}selected{% endif %}>Falling</option>
                       </select>
                     </div>
-                    <div class="field-row"><span class="field-lbl">Description</span><input type="text" value="{{ pet.get('description','') or '' }}" id="desc-{{ pet['id'] }}" style="width:260px;"></div>
+                    <div class="field-row"><span class="field-lbl">Description</span><input type="text" value="{{ pet['description'] or '' }}" id="desc-{{ pet['id'] }}" style="width:260px;"></div>
+                    <div class="field-row"><span class="field-lbl">Note</span><input type="text" value="{{ pet['note'] or '' }}" id="note-{{ pet['id'] }}" style="width:260px;"></div>
                     <div class="field-row"><span class="field-lbl">Reason</span><input type="text" placeholder="Optional" id="reason-{{ pet['id'] }}" style="width:170px;"></div>
                     <div style="display:flex;gap:7px;margin-top:4px;">
                       <button class="btn btn-sm btn-save" onclick="saveValue({{ pet['id'] }})">Save</button>
@@ -313,14 +326,21 @@
     const ep=document.getElementById(`eprism-${id}`)?.value.trim()||'0';
     const er=document.getElementById(`ernbw-${id}`)?.value.trim()||'0';
     const d=parseInt(document.getElementById(`demand-${id}`).value)||0;
+    const sd=parseInt(document.getElementById(`sdemand-${id}`)?.value)||0;
+    const pd=parseInt(document.getElementById(`pdemand-${id}`)?.value)||0;
+    const rd=parseInt(document.getElementById(`rdemand-${id}`)?.value)||0;
     const t=document.getElementById(`trend-${id}`).value;
     const desc=document.getElementById(`desc-${id}`)?.value.trim();
+    const note=document.getElementById(`note-${id}`)?.value.trim();
+    const rarity=document.getElementById(`rarity-${id}`)?.value;
     const reason=document.getElementById(`reason-${id}`).value.trim();
     const res=await fetch(`/admin/pets/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      rarity:rarity||null,
       value:v,shiny_value:s||null,prismatic_value:prism||null,rainbow_value:rnbw||null,
       image_url:img||null,shiny_image_url:simg||null,prismatic_image_url:pimg||null,rainbow_image_url:rimg||null,
       exists_normal:en,exists_shiny:es,exists_prismatic:ep,exists_rainbow:er,
-      demand:d,trend:t,description:desc||null,reason:reason||null
+      demand:d,shiny_demand:sd,prismatic_demand:pd,rainbow_demand:rd,
+      trend:t,description:desc||null,note:note||null,reason:reason||null
     })});
     if(res.ok){showToast('Saved!','success');setTimeout(()=>location.reload(),700);}else{const e=await res.json();showToast(e.detail||'Error','error');}
   }

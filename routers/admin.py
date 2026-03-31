@@ -102,13 +102,13 @@ async def add_pet(pet: PetCreate, user: str = Depends(require_admin)):
             INSERT INTO pets (name, rarity, value, shiny_value, prismatic_value, rainbow_value,
                               image_url, shiny_image_url, prismatic_image_url, rainbow_image_url,
                               note, exists_normal, exists_shiny, exists_prismatic, exists_rainbow,
-                              demand, trend, description)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                              demand, shiny_demand, prismatic_demand, rainbow_demand, trend, description)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """,
             (pet.name, pet.rarity, pet.value, pet.shiny_value, pet.prismatic_value, pet.rainbow_value,
              pet.image_url, pet.shiny_image_url, pet.prismatic_image_url, pet.rainbow_image_url,
              pet.note, pet.exists_normal, pet.exists_shiny, pet.exists_prismatic, pet.exists_rainbow,
-             pet.demand, pet.trend, pet.description),
+             pet.demand, pet.shiny_demand, pet.prismatic_demand, pet.rainbow_demand, pet.trend, pet.description),
         )
         conn.commit()
     except Exception as e:
@@ -151,17 +151,20 @@ async def update_pet_value(
         cur.execute(
             """
             UPDATE pets
-            SET value = %s, shiny_value = %s, prismatic_value = %s, rainbow_value = %s,
+            SET rarity = COALESCE(%s, rarity),
+                value = %s, shiny_value = %s, prismatic_value = %s, rainbow_value = %s,
                 image_url = %s, shiny_image_url = %s, prismatic_image_url = %s, rainbow_image_url = %s,
                 note = %s, exists_normal = %s, exists_shiny = %s, exists_prismatic = %s, exists_rainbow = %s,
-                demand = %s, trend = %s, description = %s,
+                demand = %s, shiny_demand = %s, prismatic_demand = %s, rainbow_demand = %s,
+                trend = %s, description = %s,
                 updated_at = to_char(NOW(), 'YYYY-MM-DD HH24:MI:SS')
             WHERE id = %s
             """,
-            (update.value, update.shiny_value, update.prismatic_value, update.rainbow_value,
+            (update.rarity, update.value, update.shiny_value, update.prismatic_value, update.rainbow_value,
              update.image_url, update.shiny_image_url, update.prismatic_image_url, update.rainbow_image_url,
              update.note, update.exists_normal, update.exists_shiny, update.exists_prismatic, update.exists_rainbow,
-             update.demand, update.trend, update.description, pet_id),
+             update.demand, update.shiny_demand, update.prismatic_demand, update.rainbow_demand,
+             update.trend, update.description, pet_id),
         )
         conn.commit()
         cur.close()
