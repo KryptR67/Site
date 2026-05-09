@@ -1,376 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pet Values – BGS</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pet Values – BGS</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#030508;--surface:#050912;--card:#080d1a;--card2:#0c1220;
-      --border:#0f1b2e;--border2:#162240;
-      --pink:#3b82f6;--purple:#2563eb;--blue:#38bdf8;
-      --yellow:#f59e0b;--green:#10b981;--red:#ef4444;
-      --text:#e8e4f8;--muted:#2a3a5c;--muted2:#6b82a8;
-    }
+<style>
+:root{
+  --bg:#030508;
+  --card:#0b1020;
+  --border:#15213a;
+  --text:#e8e4f8;
+  --muted:#2a3a5c;
+  --muted2:#6b82a8;
+  --yellow:#f59e0b;
+  --blue:#38bdf8;
+  --green:#22c55e;
+  --red:#ef4444;
+}
 
-    *{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;}
 
-    body{
-      background:var(--bg);
-      color:var(--text);
-      font-family:'Outfit',sans-serif;
-      min-height:100vh;
-      overflow-x:hidden;
-    }
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+}
 
-    nav{
-      position:sticky;top:0;z-index:100;
-      background:rgba(5,5,7,0.9);
-      backdrop-filter:blur(20px);
-      border-bottom:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      padding:0 28px;
-      height:56px;
-    }
+nav{
+  position:sticky;
+  top:0;
+  background:#060912;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  padding:12px 24px;
+}
 
-    .nav-logo{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      text-decoration:none;
-      margin-right:auto;
-    }
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  margin-right:auto;
+  color:white;
+  font-weight:800;
+}
 
-    .logo-mark{
-      width:26px;height:26px;
-      background:linear-gradient(135deg,var(--blue),var(--purple));
-      border-radius:7px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+.logo{
+  width:24px;height:24px;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  border-radius:6px;
+}
 
-    .nav-logo-text{
-      font-weight:800;
-      background:linear-gradient(90deg,#e8f4ff,var(--blue));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
+.nav-links a{
+  color:var(--muted2);
+  text-decoration:none;
+  margin-left:12px;
+  font-size:0.85rem;
+}
 
-    .nav-links{display:flex;gap:10px;align-items:center;}
+.nav-links a.active{color:var(--blue);}
 
-    .nav-links a{
-      color:var(--muted2);
-      text-decoration:none;
-      padding:7px 13px;
-      border-radius:8px;
-      font-size:0.85rem;
-    }
+.header{
+  text-align:center;
+  padding:40px 20px 10px;
+}
 
-    .nav-links a.active{color:var(--purple);}
-    .nav-discord{
-      background:#5865F2;
-      color:#fff!important;
-      font-weight:600;
-    }
+.header h1{
+  font-size:2rem;
+  font-weight:800;
+}
 
-    .page-header{
-      text-align:center;
-      padding:40px 20px 20px;
-    }
+.header span{
+  color:var(--blue);
+}
 
-    .page-header h1{
-      font-size:2rem;
-      font-weight:800;
-    }
+.controls{
+  max-width:1100px;
+  margin:auto;
+  padding:10px 20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
 
-    .page-header h1 span{
-      background:linear-gradient(90deg,var(--blue),var(--purple));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
+.search{
+  flex:1;
+  min-width:200px;
+}
 
-    .page-header p{
-      color:var(--muted2);
-      margin-top:6px;
-    }
+.search input{
+  width:100%;
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+}
 
-    .controls{
-      max-width:1140px;
-      margin:auto;
-      padding:0 24px 20px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
+.btn{
+  padding:8px 12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--muted2);
+  cursor:pointer;
+}
 
-    .search-wrap{
-      flex:1;
-      min-width:200px;
-      position:relative;
-    }
+.btn.active{color:var(--blue);}
 
-    .search-wrap input{
-      width:100%;
-      padding:10px 16px 10px 40px;
-      border-radius:10px;
-      border:1px solid var(--border2);
-      background:var(--card);
-      color:var(--text);
-      outline:none;
-    }
+.mode{
+  display:flex;
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
 
-    .search-icon{
-      position:absolute;
-      left:14px;
-      top:50%;
-      transform:translateY(-50%);
-    }
+.mode button{
+  padding:8px 14px;
+  border:none;
+  background:transparent;
+  color:var(--muted2);
+  cursor:pointer;
+  font-weight:700;
+}
 
-    .filter-btn{
-      background:var(--card);
-      border:1px solid var(--border2);
-      color:var(--muted2);
-      padding:8px 14px;
-      border-radius:8px;
-      cursor:pointer;
-    }
+.mode button.active{
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:white;
+}
 
-    .filter-btn.active{color:var(--purple);}
+.grid{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;
+}
 
-    .sort-select{
-      background:var(--card);
-      border:1px solid var(--border2);
-      color:var(--text);
-      padding:8px 14px;
-      border-radius:8px;
-    }
+/* CARD */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  text-decoration:none;
+  color:var(--text);
+  transition:0.2s;
+}
 
-    .mode-toggle{
-      display:flex;
-      background:var(--card);
-      border:1px solid var(--border2);
-      border-radius:10px;
-      overflow:hidden;
-    }
+.card:hover{
+  transform:translateY(-3px);
+}
 
-    .mode-tab{
-      padding:8px 18px;
-      font-weight:700;
-      border:none;
-      cursor:pointer;
-      background:transparent;
-      color:var(--muted2);
-    }
+.img{
+  height:130px;
+  background:#0a0f1f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .mode-tab.active{color:#fff;}
+.img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
-    .tab-normal.active{
-      background:linear-gradient(135deg,var(--blue),var(--purple));
-    }
+.body{
+  padding:10px;
+}
 
-    .tab-shiny.active{
-      background:linear-gradient(135deg,#38bdf8,#818cf8);
-    }
+/* TOP ROW */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    .pets-grid{
-      max-width:1140px;
-      margin:auto;
-      padding:0 24px 80px;
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-      gap:10px;
-    }
+.name{
+  font-weight:800;
+  font-size:0.9rem;
+}
 
-    .pet-card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:13px;
-      overflow:hidden;
-      text-decoration:none;
-      color:var(--text);
-      transition:0.2s;
-      display:block;
-    }
+.trend{
+  font-size:0.6rem;
+  padding:3px 6px;
+  border-radius:6px;
+  background:rgba(255,255,255,0.05);
+}
 
-    .pet-card:hover{transform:translateY(-3px);}
+.trend.up{color:var(--green);}
+.trend.down{color:var(--red);}
+.trend.stable{color:#94a3b8;}
 
-    .pet-img-wrap{
-      height:128px;
-      background:var(--surface);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+/* RARITY */
+.rarity{
+  margin-top:6px;
+  font-size:0.6rem;
+  text-transform:uppercase;
+  font-weight:800;
+  color:#60a5fa;
+}
 
-    .pet-img-wrap img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
+/* VALUE */
+.value-label{
+  font-size:0.65rem;
+  color:var(--muted2);
+  margin-top:8px;
+}
 
-    .pet-card-body{padding:10px;}
+.value{
+  font-size:1.1rem;
+  font-weight:900;
+  color:var(--yellow);
+  font-family:'JetBrains Mono';
+}
 
-    .pet-name{
-      font-weight:700;
-      font-size:0.86rem;
-      margin-bottom:4px;
-    }
-
-    .value-row{
-      display:flex;
-      justify-content:space-between;
-    }
-
-    .value-normal{
-      font-family:'JetBrains Mono';
-      font-weight:700;
-      color:var(--yellow);
-    }
-  </style>
+/* FOOTER */
+.footer{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  font-size:0.65rem;
+  color:var(--muted2);
+}
+</style>
 </head>
 
 <body>
 
 <nav>
-  <a href="/" class="nav-logo">
-    <div class="logo-mark">🫧</div>
-    <div class="nav-logo-text">BGS</div>
+  <a class="nav-logo" href="/">
+    <div class="logo"></div>
+    BGS
   </a>
-
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="/pets" class="active">Value List</a>
-    <a href="https://discord.gg/TmMGgWFRJf" class="nav-discord">Discord</a>
+    <a class="active" href="/pets">Values</a>
   </div>
 </nav>
 
-<div class="page-header">
+<div class="header">
   <h1><span>Pet Value List</span></h1>
   <p id="lastUpdated">Loading...</p>
 </div>
 
 <div class="controls">
 
-  <div class="mode-toggle">
-    <button class="mode-tab tab-normal active" onclick="setMode('normal')">Normal</button>
-    <button class="mode-tab tab-shiny" onclick="setMode('shiny')">✨ Shiny</button>
+  <div class="mode">
+    <button class="active" onclick="setMode('normal')">Normal</button>
+    <button onclick="setMode('shiny')">Shiny</button>
   </div>
 
-  <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input id="searchInput" placeholder="Search pets..." oninput="applyFilters()">
+  <div class="search">
+    <input id="search" placeholder="Search..." oninput="render()">
   </div>
 
-  <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-  <button class="filter-btn" onclick="setFilter('Limited Secret',this)">Ltd Secret</button>
-  <button class="filter-btn" onclick="setFilter('Permanent Secret',this)">Perm Secret</button>
-  <button class="filter-btn" onclick="setFilter('Limited Legendary',this)">Legendary</button>
-
-  <select class="sort-select" id="sortSelect" onchange="applyFilters()">
-    <option value="value_desc">Value ↓</option>
-    <option value="value_asc">Value ↑</option>
-    <option value="name_asc">Name A–Z</option>
-    <option value="name_desc">Name Z–A</option>
-  </select>
+  <button class="btn active" onclick="setFilter('all',this)">All</button>
+  <button class="btn" onclick="setFilter('Limited Secret',this)">Ltd Secret</button>
+  <button class="btn" onclick="setFilter('Permanent Secret',this)">Perm Secret</button>
 </div>
 
-<div class="pets-grid" id="petsGrid"></div>
+<div class="grid" id="grid"></div>
 
 <script>
-let allPets=[];
-let activeFilter='all';
-let activeMode='normal';
+let pets=[];
+let mode='normal';
+let filter='all';
 
-const MODE_FIELD={
+const FIELD={
   normal:'value',
   shiny:'shiny_value'
 };
 
-const MODE_IMG={
-  normal:'image_url',
-  shiny:'shiny_image_url'
-};
-
 function fv(v){
-  if(!v)return'N/A';
+  if(!v)return"N/A";
   const n=parseFloat(v);
   if(isNaN(n))return v;
-  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
-  if(n>=1000)return(n/1000).toFixed(1)+'K';
+  if(n>=1e6)return(n/1e6).toFixed(1)+"M";
+  if(n>=1000)return(n/1000).toFixed(1)+"K";
   return n;
 }
 
 function setMode(m){
-  activeMode=m;
-  document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
-  document.querySelector(m==='shiny'?'.tab-shiny':'.tab-normal').classList.add('active');
-  applyFilters();
+  mode=m;
+  document.querySelectorAll('.mode button').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  render();
 }
 
 function setFilter(f,btn){
-  activeFilter=f;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  filter=f;
+  document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  applyFilters();
+  render();
 }
 
-function render(p){
-  const img=p[MODE_IMG[activeMode]]||p.image_url;
-
+function card(p){
   return `
-  <a href="/pet/${p.id}" class="pet-card">
-    <div class="pet-img-wrap">
-      ${img ? `<img src="${img}">` : 'No Image'}
+  <a href="/pet/${p.id}" class="card">
+    <div class="img">
+      ${p.image_url?`<img src="${p.image_url}">`:'No Image'}
     </div>
-    <div class="pet-card-body">
-      <div class="pet-name">${p.name}</div>
-      <div class="value-row">
-        <span class="value-normal">${fv(p[MODE_FIELD[activeMode]])}</span>
+    <div class="body">
+      
+      <div class="top">
+        <div class="name">${p.name}</div>
+        <div class="trend ${p.trend||'stable'}">
+          ${p.trend==='up'?'▲ Rising':p.trend==='down'?'▼ Drop':'—'}
+        </div>
       </div>
+
+      <div class="rarity">${p.rarity||'Unknown'}</div>
+
+      <div class="value-label">Value</div>
+      <div class="value">${fv(p[FIELD[mode]])}</div>
+
+      <div class="footer">
+        <div>${p.exists_normal||0} exist</div>
+        <div>${p.updated||''}</div>
+      </div>
+
     </div>
   </a>`;
 }
 
-function applyFilters(){
-  const q=document.getElementById('searchInput').value.toLowerCase();
-  const sort=document.getElementById('sortSelect').value;
+function render(){
+  let q=document.getElementById('search').value.toLowerCase();
 
-  let pets=allPets.filter(p=>{
-    return (activeFilter==='all'||p.rarity===activeFilter)
+  let list=pets.filter(p=>{
+    return (filter==='all'||p.rarity===filter)
       && (!q||p.name.toLowerCase().includes(q));
   });
 
-  const getVal=p=>parseFloat(p[MODE_FIELD[activeMode]])||0;
-
-  const sorts={
-    value_desc:(a,b)=>getVal(b)-getVal(a),
-    value_asc:(a,b)=>getVal(a)-getVal(b),
-    name_asc:(a,b)=>a.name.localeCompare(b.name),
-    name_desc:(a,b)=>b.name.localeCompare(a.name)
-  };
-
-  pets.sort(sorts[sort]||sorts.value_desc);
-
-  document.getElementById('petsGrid').innerHTML=pets.map(render).join('');
+  document.getElementById('grid').innerHTML=list.map(card).join('');
 }
 
 async function load(){
-  const r=await fetch('/api/pets/');
-  allPets=await r.json();
-
-  document.getElementById('lastUpdated').textContent=
-    `${allPets.length} pets loaded`;
-
-  applyFilters();
+  let r=await fetch('/api/pets/');
+  pets=await r.json();
+  document.getElementById('lastUpdated').textContent=pets.length+" pets loaded";
+  render();
 }
-
 load();
 </script>
 
