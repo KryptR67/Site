@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pet Values – BGS</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
@@ -15,94 +16,219 @@
       --yellow:#f59e0b;--green:#10b981;--red:#ef4444;
       --text:#e8e4f8;--muted:#2a3a5c;--muted2:#6b82a8;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;}
-    .ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
-    .blob{position:absolute;border-radius:50%;filter:blur(120px);}
-    .blob-1{width:600px;height:600px;background:var(--purple);top:-200px;left:-200px;opacity:0.09;}
-    .blob-2{width:400px;height:400px;background:var(--pink);bottom:-100px;right:-100px;opacity:0.07;}
 
-    nav{position:sticky;top:0;z-index:100;background:rgba(5,5,7,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;height:56px;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Outfit',sans-serif;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    nav{
+      position:sticky;top:0;z-index:100;
+      background:rgba(5,5,7,0.9);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;
+      padding:0 28px;height:56px;
+    }
+
     .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto;}
-    .logo-mark{width:26px;height:26px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;}
-    .nav-logo-text{font-weight:800;font-size:1.05rem;background:linear-gradient(90deg,#e8f4ff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .nav-links{display:flex;align-items:center;gap:2px;}
-    .nav-links a{color:var(--muted2);font-weight:500;font-size:0.875rem;text-decoration:none;padding:7px 13px;border-radius:8px;}
+    .logo-mark{
+      width:26px;height:26px;
+      background:linear-gradient(135deg,var(--blue),var(--purple));
+      border-radius:7px;display:flex;align-items:center;justify-content:center;
+    }
+
+    .nav-logo-text{
+      font-weight:800;
+      background:linear-gradient(90deg,#e8f4ff,var(--blue));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .nav-links{display:flex;gap:10px;align-items:center;}
+    .nav-links a{
+      color:var(--muted2);
+      text-decoration:none;
+      padding:7px 13px;
+      border-radius:8px;
+      font-size:0.85rem;
+    }
+
     .nav-links a.active{color:var(--purple);}
-    .nav-discord{margin-left:10px;background:#5865F2!important;color:#fff!important;border-radius:8px!important;padding:6px 13px!important;font-weight:600!important;font-size:0.8rem!important;}
+    .nav-discord{
+      background:#5865F2;
+      color:#fff!important;
+      font-weight:600;
+    }
 
-    .page-header{padding:44px 24px 32px;text-align:center;}
-    .page-header h1{font-size:2rem;font-weight:800;}
-    .page-header h1 span{background:linear-gradient(90deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .page-header p{color:var(--muted2);margin-top:8px;font-size:0.9rem;}
+    .page-header{
+      text-align:center;
+      padding:40px 20px 20px;
+    }
 
-    .controls{max-width:1140px;margin:0 auto;padding:0 24px 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
-    .search-wrap{flex:1;min-width:200px;position:relative;}
-    .search-wrap input{width:100%;background:var(--card);border:1px solid var(--border2);color:var(--text);padding:10px 16px 10px 40px;border-radius:10px;}
-    .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);}
-    .filter-btn{background:var(--card);border:1px solid var(--border2);color:var(--muted2);padding:8px 14px;border-radius:8px;cursor:pointer;}
+    .page-header h1{
+      font-size:2rem;
+      font-weight:800;
+    }
+
+    .page-header h1 span{
+      background:linear-gradient(90deg,var(--blue),var(--purple));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .page-header p{
+      color:var(--muted2);
+      margin-top:6px;
+    }
+
+    .controls{
+      max-width:1140px;
+      margin:auto;
+      padding:0 24px 20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .search-wrap{flex:1;position:relative;min-width:200px;}
+    .search-wrap input{
+      width:100%;
+      padding:10px 16px 10px 40px;
+      border-radius:10px;
+      border:1px solid var(--border2);
+      background:var(--card);
+      color:var(--text);
+      outline:none;
+    }
+
+    .search-icon{
+      position:absolute;
+      left:14px;
+      top:50%;
+      transform:translateY(-50%);
+    }
+
+    .filter-btn{
+      background:var(--card);
+      border:1px solid var(--border2);
+      color:var(--muted2);
+      padding:8px 14px;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
     .filter-btn.active{color:var(--purple);}
-    .sort-select{background:var(--card);border:1px solid var(--border2);color:var(--text);padding:8px 14px;border-radius:8px;}
 
-    .mode-toggle{display:flex;background:var(--card);border:1px solid var(--border2);border-radius:10px;overflow:hidden;}
-    .mode-tab{padding:8px 18px;font-weight:700;border:none;cursor:pointer;background:transparent;color:var(--muted2);}
-    .mode-tab.active{color:#fff;}
-    .tab-normal.active{background:linear-gradient(135deg,var(--blue),var(--purple));}
-    .tab-shiny.active{background:linear-gradient(135deg,#38bdf8,#818cf8);}
+    .sort-select{
+      background:var(--card);
+      border:1px solid var(--border2);
+      color:var(--text);
+      padding:8px 14px;
+      border-radius:8px;
+    }
 
-    .pets-grid{max-width:1140px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+    .pets-grid{
+      max-width:1140px;
+      margin:auto;
+      padding:0 24px 80px;
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:10px;
+    }
 
-    .pet-card{background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;transition:0.2s;}
-    .pet-card:hover{transform:translateY(-3px);}
-    .pet-img-wrap{height:128px;background:var(--surface);display:flex;align-items:center;justify-content:center;}
-    .pet-card-body{padding:9px 11px 11px;}
-    .pet-name{font-weight:700;font-size:0.86rem;}
-    .value-row{display:flex;justify-content:space-between;}
-    .value-normal{font-family:'JetBrains Mono';font-weight:700;color:var(--yellow);}
+    .pet-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:13px;
+      overflow:hidden;
+      text-decoration:none;
+      color:var(--text);
+      transition:0.2s;
+      display:block;
+    }
 
-    .shiny-indicator{position:absolute;top:6px;right:6px;background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);padding:2px 6px;font-size:0.58rem;font-weight:700;color:var(--blue);}
+    .pet-card:hover{
+      transform:translateY(-3px);
+    }
+
+    .pet-img-wrap{
+      height:128px;
+      background:var(--surface);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .pet-img-wrap img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .pet-card-body{padding:10px;}
+
+    .pet-name{
+      font-weight:700;
+      font-size:0.86rem;
+      margin-bottom:4px;
+    }
+
+    .value-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .value-normal{
+      font-family:'JetBrains Mono';
+      font-weight:700;
+      color:var(--yellow);
+      font-size:0.85rem;
+    }
+
+    .loading{
+      text-align:center;
+      padding:50px;
+      color:var(--muted2);
+    }
   </style>
 </head>
 
 <body>
-<div class="ambient"></div>
 
 <nav>
-  <a href="/" class="nav-logo">
+  <a class="nav-logo" href="/">
     <div class="logo-mark">🫧</div>
-    <span class="nav-logo-text">BGS</span>
+    <div class="nav-logo-text">BGS</div>
   </a>
   <div class="nav-links">
-    <a href="/">Home</a>
+    <a href="/" >Home</a>
     <a href="/pets" class="active">Value List</a>
-    <a href="https://discord.gg/TmMGgWFRJf" class="nav-discord" target="_blank">Discord</a>
+    <a href="https://discord.gg/TmMGgWFRJf" class="nav-discord">Discord</a>
   </div>
 </nav>
 
 <div class="page-header">
   <h1><span>Pet Value List</span></h1>
-  <p id="lastUpdated">Loading values...</p>
-</div>
-
-<div style="max-width:1140px;margin:auto;padding:0 24px 16px;">
-  <div class="mode-toggle">
-    <button class="mode-tab tab-normal active" onclick="setMode('normal')">Normal</button>
-    <button class="mode-tab tab-shiny" onclick="setMode('shiny')">✨ Shiny</button>
-  </div>
+  <p id="lastUpdated">Loading...</p>
 </div>
 
 <div class="controls">
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
-    <input id="searchInput" placeholder="Search pets…" oninput="applyFilters()">
+    <input id="searchInput" placeholder="Search pets..." oninput="applyFilters()">
   </div>
 
-  <div>
-    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-    <button class="filter-btn" onclick="setFilter('Limited Secret',this)">Ltd Secret</button>
-    <button class="filter-btn" onclick="setFilter('Permanent Secret',this)">Perm Secret</button>
-    <button class="filter-btn" onclick="setFilter('Limited Legendary',this)">Legendary</button>
-  </div>
+  <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+  <button class="filter-btn" onclick="setFilter('Limited Secret',this)">Ltd Secret</button>
+  <button class="filter-btn" onclick="setFilter('Permanent Secret',this)">Perm Secret</button>
+  <button class="filter-btn" onclick="setFilter('Limited Legendary',this)">Legendary</button>
 
   <select class="sort-select" id="sortSelect" onchange="applyFilters()">
     <option value="value_desc">Value ↓</option>
@@ -112,16 +238,13 @@
   </select>
 </div>
 
-<div class="pets-grid" id="petsGrid"></div>
+<div class="pets-grid" id="petsGrid">
+  <div class="loading">Loading pets...</div>
+</div>
 
 <script>
 let allPets=[];
 let activeFilter='all';
-let activeMode='normal';
-
-const MODE_FIELD={normal:'value',shiny:'shiny_value'};
-const MODE_IMG={normal:'image_url',shiny:'shiny_image_url'};
-const MODE_COLOR={normal:'var(--yellow)',shiny:'var(--blue)'};
 
 function fv(v){
   if(!v)return'N/A';
@@ -132,11 +255,19 @@ function fv(v){
   return n;
 }
 
-function setMode(m){
-  activeMode=m;
-  document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
-  document.querySelector(m==='shiny'?'.tab-shiny':'.tab-normal').classList.add('active');
-  applyFilters();
+function render(p){
+  return `
+  <a href="/pet/${p.id}" class="pet-card">
+    <div class="pet-img-wrap">
+      ${p.image_url ? `<img src="${p.image_url}">` : 'No Image'}
+    </div>
+    <div class="pet-card-body">
+      <div class="pet-name">${p.name}</div>
+      <div class="value-row">
+        <span class="value-normal">${fv(p.value)}</span>
+      </div>
+    </div>
+  </a>`;
 }
 
 function setFilter(f,btn){
@@ -146,25 +277,12 @@ function setFilter(f,btn){
   applyFilters();
 }
 
-function render(p){
-  const img=p[MODE_IMG[activeMode]]||p.image_url;
-  return `<div class="pet-card">
-    <div class="pet-img-wrap">${img?`<img src="${img}">`:'?'}</div>
-    <div class="pet-card-body">
-      <div class="pet-name">${p.name}</div>
-      <div class="value-row">
-        <span class="value-normal">${fv(p[MODE_FIELD[activeMode]])}</span>
-      </div>
-    </div>
-  </div>`;
-}
-
 function applyFilters(){
   const q=document.getElementById('searchInput').value.toLowerCase();
+
   let pets=allPets.filter(p=>{
     return (activeFilter==='all'||p.rarity===activeFilter)
-      && (!q||p.name.toLowerCase().includes(q))
-      && (activeMode==='normal'||p[MODE_FIELD[activeMode]]);
+      && (!q||p.name.toLowerCase().includes(q));
   });
 
   document.getElementById('petsGrid').innerHTML=pets.map(render).join('');
@@ -173,10 +291,15 @@ function applyFilters(){
 async function load(){
   const r=await fetch('/api/pets/');
   allPets=await r.json();
-  document.getElementById('lastUpdated').textContent=`${allPets.length} pets loaded`;
+
+  document.getElementById('lastUpdated').textContent=
+    `${allPets.length} pets loaded`;
+
   applyFilters();
 }
+
 load();
 </script>
+
 </body>
 </html>
